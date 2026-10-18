@@ -1075,13 +1075,5 @@ include __DIR__ . '/../partials/head.php';
   <?php include __DIR__ . '/../partials/footer.php'; ?>
   <?php include __DIR__ . '/../partials/mobile-bar.php'; ?>
 
-  <!-- Admin Edit Scripts (only loaded if logged in) -->
-  <?php if (function_exists('is_admin') && is_admin()): ?>
-  <script src="/assets/js/admin-edit.js" type="module" defer></script>
-  <?php endif; ?>
-
-  <!-- Scripts -->
-  <script src="/assets/vendor/toastify/toastify.min.js" defer></script>
-  <script src="/assets/js/main.js" type="module" defer></script>
 </body>
 </html>

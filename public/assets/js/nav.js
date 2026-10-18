@@ -48,8 +48,11 @@ function initScrollBehavior() {
           header.classList.remove('header-glass');
         }
         
-        // Hide/show on scroll direction
-        if (currentScroll > lastScroll && currentScroll > 100) {
+        const mobileMenu = document.getElementById('mobile-menu-panel');
+        const isMobileOpen = mobileMenu && !mobileMenu.classList.contains('hidden');
+
+        // Hide/show on scroll direction (never hide when mobile menu is open)
+        if (!isMobileOpen && currentScroll > lastScroll && currentScroll > 100) {
           header.classList.add('header-hidden');
         } else {
           header.classList.remove('header-hidden');
@@ -151,6 +154,8 @@ function initMobileMenu() {
 
   function openMenu() {
     isOpen = true;
+    const header = document.getElementById('site-header');
+    if (header) header.classList.remove('header-hidden');
     menu.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     btn.setAttribute('aria-expanded', 'true');

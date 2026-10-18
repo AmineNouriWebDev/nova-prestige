@@ -24,6 +24,7 @@ if (!isset($seo_data) && function_exists('seo')) {
     })();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="<?= e(function_exists('csrf_token') ? csrf_token() : '') ?>">
   
   <!-- Theme Color -->
   <meta name="theme-color" content="#12304F" media="(prefers-color-scheme: light)">
@@ -77,7 +78,7 @@ if (!isset($seo_data) && function_exists('seo')) {
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon-180.png">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/assets/css/app.css">
+  <link rel="stylesheet" href="/assets/css/app.css?v=<?= file_exists(dirname(__DIR__, 2) . '/public/assets/css/app.css') ? filemtime(dirname(__DIR__, 2) . '/public/assets/css/app.css') : time() ?>">
   <link rel="stylesheet" href="/assets/vendor/toastify/toastify.min.css">
 
   <!-- Structured Data JSON-LD -->

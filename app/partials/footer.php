@@ -167,11 +167,9 @@ $footer_linkedin = function_exists('setting') ? setting('linkedin') : '';
     <!-- Bottom Bar -->
     <div class="mt-14 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
       
-      <!-- Copyright & AI Mention -->
+      <!-- Copyright & MaxSolving link -->
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-center md:text-left">
-        <span><?= e(t('global.footer.copyright', '© ' . date('Y') . ' NOVA PRESTIGE. Tous droits réservés.')) ?></span>
-        <span class="hidden sm:inline text-white/20">•</span>
-        <span class="italic text-slate-400/80"><?= e(t('global.footer.ai_mention', 'Illustrations générées par IA.')) ?></span>
+        <span>© <?= date('Y') ?> NOVA PRESTIGE by <a href="https://maxsolving.com" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-np-accent underline underline-offset-2 transition-colors">MaxSolving</a>. Tous droits réservés.</span>
       </div>
 
       <!-- Legal Links -->
@@ -194,3 +192,10 @@ $footer_linkedin = function_exists('setting') ? setting('linkedin') : '';
     </div>
   </div>
 </footer>
+
+<!-- Core Application Scripts -->
+<?php if (function_exists('is_admin') && is_admin()): ?>
+<script src="/assets/js/admin-edit.js?v=<?= file_exists(dirname(__DIR__, 2) . '/public/assets/js/admin-edit.js') ? filemtime(dirname(__DIR__, 2) . '/public/assets/js/admin-edit.js') : time() ?>" type="module" defer></script>
+<?php endif; ?>
+<script src="/assets/vendor/toastify/toastify.min.js" defer></script>
+<script src="/assets/js/main.js?v=<?= file_exists(dirname(__DIR__, 2) . '/public/assets/js/main.js') ? filemtime(dirname(__DIR__, 2) . '/public/assets/js/main.js') : time() ?>" type="module" defer></script>

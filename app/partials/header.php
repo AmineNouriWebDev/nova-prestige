@@ -143,7 +143,7 @@ $current_page = $page_key ?? '';
   
   <!-- Mega-menu panel (Desktop) -->
   <div id="mega-menu-panel" 
-       class="hidden absolute top-full left-0 right-0 bg-np-surface/98 backdrop-blur-xl border-b border-np-border shadow-2xl transition-all duration-200 origin-top" 
+       class="hidden absolute top-full left-0 right-0 bg-white dark:bg-[#0B1A2B] border-b border-np-border shadow-2xl transition-all duration-200 origin-top z-50" 
        role="region" 
        aria-label="Sous-menu Expertises">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -153,13 +153,13 @@ $current_page = $page_key ?? '';
         <div class="col-span-8">
           <div class="flex items-center justify-between pb-3 mb-6 border-b border-np-border">
             <span class="font-mono text-xs uppercase tracking-wider text-np-accent font-semibold">01 — Domaines d'expertises techniques</span>
-            <a href="/#expertises" class="text-xs text-np-text-muted hover:text-np-accent transition-colors">Toutes les expertises →</a>
+            <a href="/#expertises" class="text-xs text-np-text-muted hover:text-np-accent transition-colors font-medium">Toutes les expertises →</a>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             
             <!-- Card 1 -->
-            <a href="/bureau-etudes-faisabilite" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-np-bg/60 transition-all duration-200">
+            <a href="/bureau-etudes-faisabilite" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all duration-200">
               <div class="p-2 rounded bg-np-primary/10 dark:bg-np-primary/30 text-np-accent group-hover:bg-np-accent group-hover:text-white transition-colors flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -172,7 +172,7 @@ $current_page = $page_key ?? '';
             </a>
 
             <!-- Card 2 -->
-            <a href="/prototypes-developpement-produits" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-np-bg/60 transition-all duration-200">
+            <a href="/prototypes-developpement-produits" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all duration-200">
               <div class="p-2 rounded bg-np-primary/10 dark:bg-np-primary/30 text-np-accent group-hover:bg-np-accent group-hover:text-white transition-colors flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
@@ -185,7 +185,7 @@ $current_page = $page_key ?? '';
             </a>
 
             <!-- Card 3 -->
-            <a href="/facades-metalliques-bardage-calepinage" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-np-bg/60 transition-all duration-200">
+            <a href="/facades-metalliques-bardage-calepinage" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all duration-200">
               <div class="p-2 rounded bg-np-primary/10 dark:bg-np-primary/30 text-np-accent group-hover:bg-np-accent group-hover:text-white transition-colors flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
@@ -198,7 +198,7 @@ $current_page = $page_key ?? '';
             </a>
 
             <!-- Card 4 -->
-            <a href="/methodes-industrialisation" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-np-bg/60 transition-all duration-200">
+            <a href="/methodes-industrialisation" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all duration-200">
               <div class="p-2 rounded bg-np-primary/10 dark:bg-np-primary/30 text-np-accent group-hover:bg-np-accent group-hover:text-white transition-colors flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
@@ -212,7 +212,7 @@ $current_page = $page_key ?? '';
             </a>
 
             <!-- Card 5 (spans 2 on small grid) -->
-            <a href="/conseil-industriel-equipements" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-np-bg/60 transition-all duration-200 col-span-2">
+            <a href="/conseil-industriel-equipements" class="group flex items-start gap-3.5 p-3 rounded-lg border border-transparent hover:border-np-border hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all duration-200 col-span-2">
               <div class="p-2 rounded bg-np-primary/10 dark:bg-np-primary/30 text-np-accent group-hover:bg-np-accent group-hover:text-white transition-colors flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
@@ -228,7 +228,7 @@ $current_page = $page_key ?? '';
         </div>
 
         <!-- Right: Formation Spotlight Sidebar (4 cols) -->
-        <div class="col-span-4 bg-np-bg/80 dark:bg-np-bg/40 border border-np-border rounded-xl p-5 flex flex-col justify-between">
+        <div class="col-span-4 bg-slate-50 dark:bg-slate-900/80 border border-np-border rounded-xl p-5 flex flex-col justify-between shadow-sm">
           <div>
             <div class="flex items-center gap-2 mb-3">
               <span class="w-2 h-2 rounded-full bg-np-accent"></span>
@@ -262,48 +262,86 @@ $current_page = $page_key ?? '';
     </div>
   </div>
 
+</header>
+
   <!-- Mobile Fullscreen Menu Panel (< lg) -->
   <div id="mobile-menu-panel" 
-       class="hidden fixed inset-0 top-16 z-50 bg-np-bg/95 backdrop-blur-2xl border-t border-np-border overflow-y-auto p-6" 
+       class="hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-white dark:bg-[#0A0F16] border-t border-np-border overflow-y-auto px-6 py-6" 
        role="dialog" 
        aria-modal="true" 
        aria-label="Navigation mobile">
-    <div class="flex flex-col min-h-[calc(100vh-5rem)] justify-between">
-      <div class="space-y-4">
+    <div class="flex flex-col min-h-full justify-between pb-24">
+      <div class="space-y-1">
         
+        <!-- Accueil Link -->
+        <a href="/" class="flex items-center gap-3 py-3 text-base font-grotesk font-semibold text-np-text border-b border-np-border/60 hover:text-np-accent transition-colors">
+          <svg class="w-5 h-5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          <span>Accueil</span>
+        </a>
+
         <!-- Accordion Expertises -->
-        <div class="border-b border-np-border pb-3">
+        <div class="border-b border-np-border/60 py-1">
           <button type="button" 
                   id="mobile-accordion-trigger" 
-                  class="flex items-center justify-between w-full py-2.5 text-base font-grotesk font-semibold text-np-text" 
+                  class="flex items-center justify-between w-full py-3 text-base font-grotesk font-semibold text-np-text hover:text-np-accent transition-colors" 
                   aria-expanded="false" 
                   aria-controls="mobile-expertises-list">
-            <span>Expertises</span>
+            <span class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+              <span>Expertises</span>
+            </span>
             <svg class="w-5 h-5 transition-transform duration-200" id="mobile-accordion-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
             </svg>
           </button>
           
-          <div id="mobile-expertises-list" class="hidden pl-3 mt-2 space-y-2 border-l-2 border-np-accent/40">
-            <a href="/bureau-etudes-faisabilite" class="block py-2 text-sm text-np-text-muted hover:text-np-accent">Bureau d'études & faisabilité</a>
-            <a href="/prototypes-developpement-produits" class="block py-2 text-sm text-np-text-muted hover:text-np-accent">Prototypes & développement</a>
-            <a href="/facades-metalliques-bardage-calepinage" class="block py-2 text-sm text-np-text-muted hover:text-np-accent">Façades & calepinage</a>
-            <a href="/methodes-industrialisation" class="block py-2 text-sm text-np-text-muted hover:text-np-accent">Méthodes & industrialisation</a>
-            <a href="/conseil-industriel-equipements" class="block py-2 text-sm text-np-text-muted hover:text-np-accent">Conseil industriel & équipements</a>
-            <a href="/formation-technique-atelier" class="block py-2 text-sm text-np-accent font-medium">Formation technique sur site</a>
+          <div id="mobile-expertises-list" class="hidden pl-8 pr-2 pb-2 space-y-2 border-l-2 border-np-accent/40 ml-2 mt-1">
+            <a href="/bureau-etudes-faisabilite" class="block py-2 text-sm text-np-text-muted hover:text-np-accent font-medium">Bureau d'études & faisabilité</a>
+            <a href="/prototypes-developpement-produits" class="block py-2 text-sm text-np-text-muted hover:text-np-accent font-medium">Prototypes & développement</a>
+            <a href="/facades-metalliques-bardage-calepinage" class="block py-2 text-sm text-np-text-muted hover:text-np-accent font-medium">Façades & calepinage</a>
+            <a href="/methodes-industrialisation" class="block py-2 text-sm text-np-text-muted hover:text-np-accent font-medium">Méthodes & industrialisation</a>
+            <a href="/conseil-industriel-equipements" class="block py-2 text-sm text-np-text-muted hover:text-np-accent font-medium">Conseil industriel & équipements</a>
+            <a href="/formation-technique-atelier" class="block py-2 text-sm text-np-accent font-semibold">Formation technique sur site</a>
           </div>
         </div>
 
-        <a href="/formation-technique-atelier" class="block py-3 text-base font-grotesk font-semibold text-np-text border-b border-np-border">Formation</a>
-        <a href="/france-tunisie-maghreb" class="block py-3 text-base font-grotesk font-semibold text-np-text border-b border-np-border">Zones d'intervention</a>
-        <a href="/a-propos" class="block py-3 text-base font-grotesk font-semibold text-np-text border-b border-np-border">À propos</a>
-        <a href="/contact" class="block py-3 text-base font-grotesk font-semibold text-np-text border-b border-np-border">Contact</a>
+        <a href="/formation-technique-atelier" class="flex items-center gap-3 py-3.5 text-base font-grotesk font-semibold text-np-text border-b border-np-border/60 hover:text-np-accent transition-colors">
+          <svg class="w-5 h-5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+          </svg>
+          <span>Formation</span>
+        </a>
+
+        <a href="/france-tunisie-maghreb" class="flex items-center gap-3 py-3.5 text-base font-grotesk font-semibold text-np-text border-b border-np-border/60 hover:text-np-accent transition-colors">
+          <svg class="w-5 h-5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Zones d'intervention</span>
+        </a>
+
+        <a href="/a-propos" class="flex items-center gap-3 py-3.5 text-base font-grotesk font-semibold text-np-text border-b border-np-border/60 hover:text-np-accent transition-colors">
+          <svg class="w-5 h-5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+          <span>À propos</span>
+        </a>
+
+        <a href="/contact" class="flex items-center gap-3 py-3.5 text-base font-grotesk font-semibold text-np-text border-b border-np-border/60 hover:text-np-accent transition-colors">
+          <svg class="w-5 h-5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <span>Contact</span>
+        </a>
       </div>
 
       <!-- Mobile Menu Bottom Actions -->
-      <div class="pt-8 pb-12 space-y-4">
+      <div class="pt-8 space-y-4">
         <?php if (!empty($header_phone)): ?>
-        <a href="tel:<?= e($header_phone) ?>" class="flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-np-surface border border-np-border text-sm font-mono text-np-text">
+        <a href="tel:<?= e($header_phone) ?>" class="flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-slate-100 dark:bg-slate-800 border border-np-border text-sm font-mono text-np-text hover:text-np-accent transition-colors">
           <svg class="w-4 h-4 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
           </svg>
@@ -317,10 +355,21 @@ $current_page = $page_key ?? '';
             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
           </svg>
         </a>
+
+        <!-- Legal Links & Copyright in Mobile Menu -->
+        <div class="pt-4 border-t border-np-border/60 flex flex-col gap-2 text-xs text-np-text-muted">
+          <div class="flex items-center justify-center gap-4">
+            <a href="/mentions-legales" class="hover:text-np-accent transition-colors">Mentions légales</a>
+            <span>•</span>
+            <a href="/politique-confidentialite" class="hover:text-np-accent transition-colors">Confidentialité</a>
+          </div>
+          <div class="text-center text-[11px] text-np-text-muted/70">
+            © <?= date('Y') ?> NOVA PRESTIGE by <a href="https://maxsolving.com" target="_blank" rel="noopener noreferrer" class="hover:text-np-accent underline underline-offset-2">MaxSolving</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</header>
 
 <!-- Spacer for fixed header -->
 <div class="h-16 lg:h-20" aria-hidden="true"></div>

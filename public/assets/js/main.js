@@ -42,15 +42,17 @@ function initLogoTripleClick() {
   if (!logo) return;
   
   let clickCount = 0;
-  let clickTimer;
+  let clickTimer = null;
   
   logo.addEventListener('click', (e) => {
+    e.preventDefault();
     clickCount++;
     clearTimeout(clickTimer);
     
-    if (clickCount === 3) {
-      e.preventDefault();
+    // Check if 3 clicks reached (via rapid clicks or native e.detail)
+    if (clickCount >= 3 || e.detail >= 3) {
       clickCount = 0;
+      clearTimeout(clickTimer);
       const isAdmin = document.body.getAttribute('data-admin') === '1';
       if (isAdmin) {
         showAdminQuickMenu();
@@ -60,19 +62,24 @@ function initLogoTripleClick() {
       return;
     }
     
+    // If not followed by another click within 600ms, treat as regular home navigation
     clickTimer = setTimeout(() => {
       const count = clickCount;
       clickCount = 0;
       if (count === 1) {
-        // If clicking on a link that goes to /, default behavior handles it,
-        // but if intercepted or button, navigate to /
-        if (logo.tagName.toLowerCase() !== 'a') {
-          window.location.href = '/';
+        const targetUrl = logo.getAttribute('href') || '/';
+        if (window.location.pathname !== '/' && window.location.pathname !== '') {
+          window.location.href = targetUrl;
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       }
-    }, 450);
+    }, 600);
   });
 }
+
+// Expose openAdminLogin helper globally
+window.openAdminLogin = showLoginModal;
 
 function showLoginModal() {
   // Check if modal already exists
