@@ -12,6 +12,9 @@ if ($path !== '/') {
 }
 
 $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
+if ($method === 'HEAD') {
+    $method = 'GET';
+}
 
 // Phase 2 slugs definition and title mapping
 $phase2Slugs = [
