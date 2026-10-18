@@ -1,0 +1,12 @@
+{
+  "name": "nova-prestige",
+  "version": "1.0.0",
+  "description": "NOVA PRESTIGE — Bureau d'études techniques",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./public/assets/css/app.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./public/assets/css/app.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

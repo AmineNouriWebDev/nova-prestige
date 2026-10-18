@@ -1,0 +1,59 @@
+# Configuration Nginx pour NOVA PRESTIGE (Production VPS)
+# Racine web : /var/www/html/public (ou /var/www/nova-prestige/public)
+
+server {
+    listen 80;
+    server_name nova-prestige.fr www.nova-prestige.fr;
+    root /var/www/html/public;
+    index index.php index.html;
+
+    # En-têtes de sécurité
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # Interdiction stricte d'exécuter des scripts PHP dans /uploads
+    location ~* ^/uploads/.*\.php$ {
+        deny all;
+        return 404;
+    }
+
+    # Interdiction d'accès aux dossiers applicatifs internes et fichiers de configuration
+    location ~ ^/(app|database|\.env|composer\.|package\.) {
+        deny all;
+        return 404;
+    }
+
+    # Fichiers cachés (.git, .env...)
+    location ~ /\. {
+        deny all;
+        return 404;
+    }
+
+    # Cache des assets statiques (1 an avec immutable)
+    location ~* \.(css|js|woff2|woff|ttf|eot|svg|png|jpg|jpeg|webp|avif|ico|gif)$ {
+        expires 1y;
+        add_header Cache-Control "public, no-transform, immutable";
+        add_header X-Content-Type-Options "nosniff" always;
+        access_log off;
+        try_files $uri =404;
+    }
+
+    # Routage front-controller
+    location / {
+        try_files $uri /index.php?$query_string;
+    }
+
+    # Traitement PHP-FPM
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 127.0.0.1:9000; # ou unix:/run/php/php8.2-fpm.sock
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_buffer_size 16k;
+        fastcgi_buffers 4 16k;
+    }
+}

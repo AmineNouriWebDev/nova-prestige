@@ -1,0 +1,7 @@
+/.env
+/vendor/
+/node_modules/
+/public/uploads/*
+!/public/uploads/.gitkeep
+configurationVPS-1.2.txt
+*.log

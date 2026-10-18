@@ -1,0 +1,57 @@
+services:
+  nova_app:
+    container_name: nova_app
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "8086:80"
+    volumes:
+      - .:/var/www/html
+      - nova_uploads:/var/www/html/public/uploads
+    restart: always
+    depends_on:
+      - nova_db
+    networks:
+      - nova_network
+    env_file:
+      - .env
+
+  nova_db:
+    container_name: nova_db
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: nova_root_2024
+      MYSQL_DATABASE: nova_prestige
+      MYSQL_USER: nova_user
+      MYSQL_PASSWORD: nova_secret_2024
+    volumes:
+      - nova_db_data:/var/lib/mysql
+    networks:
+      - nova_network
+
+  nova_pma:
+    container_name: nova_pma
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8087:80"
+    environment:
+      PMA_HOST: nova_db
+      PMA_USER: nova_user
+      PMA_PASSWORD: nova_secret_2024
+    restart: always
+    depends_on:
+      - nova_db
+    networks:
+      - nova_network
+
+volumes:
+  nova_db_data:
+    driver: local
+  nova_uploads:
+    driver: local
+
+networks:
+  nova_network:
+    driver: bridge
