@@ -50,20 +50,6 @@ if (!function_exists('t')) {
             return $val !== '' && $val !== null && $val !== 'Array' && $val !== '[Array]';
         };
 
-        // Check in-memory DB cache
-        if (isset(ContentCache::$data[$lang][$key]['value'])) {
-            $val = ContentCache::$data[$lang][$key]['value'];
-            if ($isValid($val)) {
-                return (string)$val;
-            }
-        }
-        if (isset(ContentCache::$data['fr'][$key]['value'])) {
-            $val = ContentCache::$data['fr'][$key]['value'];
-            if ($isValid($val)) {
-                return (string)$val;
-            }
-        }
-
         // Aliases to seamlessly support both naming variants
         $aliases = [
             'home.hero.supertitle' => 'home.hero.surtitre',
@@ -83,76 +69,128 @@ if (!function_exists('t')) {
             'home.stats.item3_label' => 'home.stats.label_3',
             'home.stats.item4_val' => 'home.stats.val_4',
             'home.stats.item4_label' => 'home.stats.label_4',
-            'home.services.s1_text' => 's1.text',
-            'home.services.s2_text' => 's2.text',
-            'home.services.s3_text' => 's3.text',
-            'home.services.s4_text' => 's4.text',
-            'home.services.s5_text' => 's5.text',
-            'home.services.s6_text' => 's6.text',
-            'home.services.s1_title' => 's1.title',
-            'home.services.s2_title' => 's2.title',
-            'home.services.s3_title' => 's3.title',
-            'home.services.s4_title' => 's4.title',
-            'home.services.s5_title' => 's5.title',
-            'home.services.s6_title' => 's6.title',
+            'home.services.s1_text' => 'home.services.s1_desc',
+            'home.services.s2_text' => 'home.services.s2_desc',
+            'home.services.s3_text' => 'home.services.s3_desc',
+            'home.services.s4_text' => 'home.services.s4_desc',
+            'home.services.s5_text' => 'home.services.s5_desc',
+            'home.services.s6_text' => 'home.services.s6_desc',
+            's1.text' => 'home.services.s1_desc',
+            's2.text' => 'home.services.s2_desc',
+            's3.text' => 'home.services.s3_desc',
+            's4.text' => 'home.services.s4_desc',
+            's5.text' => 'home.services.s5_desc',
+            's6.text' => 'home.services.s6_desc',
+            's1.title' => 'home.services.s1_title',
+            's2.title' => 'home.services.s2_title',
+            's3.title' => 'home.services.s3_title',
+            's4.title' => 'home.services.s4_title',
+            's5.title' => 'home.services.s5_title',
+            's6.title' => 'home.services.s6_title',
             'home.process.step1_title' => 'home.process.step1.title',
-            'home.process.step1_text' => 'home.process.step1.text',
+            'home.process.step1_text' => 'home.process.step1_desc',
             'home.process.step2_title' => 'home.process.step2.title',
-            'home.process.step2_text' => 'home.process.step2.text',
+            'home.process.step2_text' => 'home.process.step2_desc',
             'home.process.step3_title' => 'home.process.step3.title',
-            'home.process.step3_text' => 'home.process.step3.text',
+            'home.process.step3_text' => 'home.process.step3_desc',
             'home.process.step4_title' => 'home.process.step4.title',
-            'home.process.step4_text' => 'home.process.step4.text',
+            'home.process.step4_text' => 'home.process.step4_desc',
             'home.process.step5_title' => 'home.process.step5.title',
-            'home.process.step5_text' => 'home.process.step5.text',
-            'home.audience.card1_role' => 'home.audience.c1.title',
-            'home.audience.card1_text' => 'home.audience.c1.text',
-            'home.audience.card2_role' => 'home.audience.c2.title',
-            'home.audience.card2_text' => 'home.audience.c2.text',
-            'home.audience.card3_role' => 'home.audience.c3.title',
-            'home.audience.card3_text' => 'home.audience.c3.text',
-            'home.why.item1_title' => 'home.why.p1.title',
-            'home.why.item1_text' => 'home.why.p1.text',
-            'home.why.item2_title' => 'home.why.p2.title',
-            'home.why.item2_text' => 'home.why.p2.text',
-            'home.why.item3_title' => 'home.why.p3.title',
-            'home.why.item3_text' => 'home.why.p3.text',
-            'home.why.item4_title' => 'home.why.p4.title',
-            'home.why.item4_text' => 'home.why.p4.text',
+            'home.process.step5_text' => 'home.process.step5_desc',
+            'home.audience.card1_role' => 'home.audience.card1_title',
+            'home.audience.card1_text' => 'home.audience.card1_desc',
+            'home.audience.card2_role' => 'home.audience.card2_title',
+            'home.audience.card2_text' => 'home.audience.card2_desc',
+            'home.audience.card3_role' => 'home.audience.card3_title',
+            'home.audience.card3_text' => 'home.audience.card3_desc',
+            'home.why.item1_title' => 'home.why.p1_title',
+            'home.why.item1_text' => 'home.why.p1_desc',
+            'home.why.item2_title' => 'home.why.p2_title',
+            'home.why.item2_text' => 'home.why.p2_desc',
+            'home.why.item3_title' => 'home.why.p3_title',
+            'home.why.item3_text' => 'home.why.p3_desc',
+            'home.why.item4_title' => 'home.why.p4_title',
+            'home.why.item4_text' => 'home.why.p4_desc',
+            'home.why.p1.title' => 'home.why.p1_title',
+            'home.why.p1.text' => 'home.why.p1_desc',
+            'home.why.p2.title' => 'home.why.p2_title',
+            'home.why.p2.text' => 'home.why.p2_desc',
+            'home.why.p3.title' => 'home.why.p3_title',
+            'home.why.p3.text' => 'home.why.p3_desc',
+            'home.why.p4.title' => 'home.why.p4_title',
+            'home.why.p4.text' => 'home.why.p4_desc',
             'home.zones.france_text' => 'home.zones.france',
             'home.zones.tunisie_text' => 'home.zones.tunisie',
             'home.zones.maghreb_text' => 'home.zones.maghreb',
             'global.footer.ai_mention' => 'global.footer.ai_notice',
-            'home.cta.btn' => 'home.cta.link_text',
-            'home.cta.link' => 'home.cta.link_text',
+            'home.cta.btn' => 'home.cta.button',
+            'home.cta.link' => 'home.cta.button',
         ];
 
-        $lookupKey = $key;
-        if (!empty($CONTENT_DEFAULTS) && !array_key_exists($lookupKey, $CONTENT_DEFAULTS)) {
-            if (isset($aliases[$key])) {
-                $lookupKey = $aliases[$key];
+        // Gather all candidates to check in order: exact key, aliases, and stripped prefixes
+        $candidates = [$key];
+        if (isset($aliases[$key])) {
+            $candidates[] = $aliases[$key];
+        }
+        $flipped = array_flip($aliases);
+        if (isset($flipped[$key])) {
+            $candidates[] = $flipped[$key];
+        }
+        if (str_starts_with($key, 'home.')) {
+            $candidates[] = substr($key, 5);
+        } else {
+            $candidates[] = 'home.' . $key;
+        }
+
+        $currPage = $GLOBALS['page_key'] ?? (function_exists('current_page_key') ? current_page_key() : 'home');
+        if ($currPage !== '' && $currPage !== 'home') {
+            if (str_starts_with($key, $currPage . '.')) {
+                $candidates[] = substr($key, strlen($currPage) + 1);
             } else {
-                $flipped = array_flip($aliases);
-                if (isset($flipped[$key])) {
-                    $lookupKey = $flipped[$key];
-                }
+                $candidates[] = $currPage . '.' . $key;
             }
         }
 
-        // Fallback to default dictionary
-        if (is_array($CONTENT_DEFAULTS) && array_key_exists($lookupKey, $CONTENT_DEFAULTS)) {
-            $defaultEntry = $CONTENT_DEFAULTS[$lookupKey];
-            if (is_array($defaultEntry)) {
-                $val = (string)($defaultEntry['value'] ?? '');
+        // 1. Check in-memory DB cache for requested language
+        foreach ($candidates as $cand) {
+            if (isset(ContentCache::$data[$lang][$cand]['value'])) {
+                $val = ContentCache::$data[$lang][$cand]['value'];
                 if ($isValid($val)) {
-                    return $val;
+                    return (string)$val;
                 }
-            } elseif ($isValid($defaultEntry)) {
-                return (string)$defaultEntry;
             }
         }
 
-        // If fallback provided, return it
+        // 2. Check in-memory DB cache for 'fr' fallback
+        if ($lang !== 'fr') {
+            foreach ($candidates as $cand) {
+                if (isset(ContentCache::$data['fr'][$cand]['value'])) {
+                    $val = ContentCache::$data['fr'][$cand]['value'];
+                    if ($isValid($val)) {
+                        return (string)$val;
+                    }
+                }
+            }
+        }
+
+        // 3. Check default dictionary
+        if (is_array($CONTENT_DEFAULTS)) {
+            foreach ($candidates as $cand) {
+                if (array_key_exists($cand, $CONTENT_DEFAULTS)) {
+                    $defaultEntry = $CONTENT_DEFAULTS[$cand];
+                    if (is_array($defaultEntry)) {
+                        $val = (string)($defaultEntry['value'] ?? '');
+                        if ($isValid($val)) {
+                            return $val;
+                        }
+                    } elseif ($isValid($defaultEntry)) {
+                        return (string)$defaultEntry;
+                    }
+                }
+            }
+        }
+
+        // 4. If fallback provided, return it
         if ($fallback !== null && $fallback !== '') {
             return $fallback;
         }
@@ -183,35 +221,94 @@ if (!function_exists('img')) {
      * Returns associative array: ['src' => string, 'alt' => string]
      * If DB src is empty, falls back to SVG gradient placeholder.
      */
-    function img(string $key, string $lang = 'fr'): array
+    function img(string $key, ?string $fallbackSrc = null, ?string $fallbackAlt = null, string $lang = 'fr'): array
     {
         global $CONTENT_DEFAULTS;
+
+        if ($fallbackSrc !== null && in_array(strtolower($fallbackSrc), ['fr', 'en', 'ar', 'es', 'de'], true)) {
+            $lang = strtolower($fallbackSrc);
+            $fallbackSrc = null;
+        }
 
         $src = '';
         $alt = '';
 
-        // Check DB cache
-        if (isset(ContentCache::$data[$lang][$key])) {
-            $row = ContentCache::$data[$lang][$key];
-            $src = trim((string)($row['value'] ?? ''));
-            $alt = trim((string)($row['alt'] ?? ''));
+        $candidates = [$key];
+        if (str_starts_with($key, 'home.')) {
+            $candidates[] = substr($key, 5);
+        } else {
+            $candidates[] = 'home.' . $key;
+        }
+
+        $currPage = $GLOBALS['page_key'] ?? (function_exists('current_page_key') ? current_page_key() : 'home');
+        if ($currPage !== '' && $currPage !== 'home') {
+            if (str_starts_with($key, $currPage . '.')) {
+                $candidates[] = substr($key, strlen($currPage) + 1);
+            } else {
+                $candidates[] = $currPage . '.' . $key;
+            }
+        }
+
+        // Check DB cache for requested language
+        foreach ($candidates as $cand) {
+            if (isset(ContentCache::$data[$lang][$cand])) {
+                $row = ContentCache::$data[$lang][$cand];
+                $val = trim((string)($row['value'] ?? ''));
+                if ($val !== '') {
+                    $src = $val;
+                    $alt = trim((string)($row['alt'] ?? ''));
+                    break;
+                }
+            }
+        }
+
+        // Fallback to 'fr' in DB cache
+        if ($src === '' && $lang !== 'fr') {
+            foreach ($candidates as $cand) {
+                if (isset(ContentCache::$data['fr'][$cand])) {
+                    $row = ContentCache::$data['fr'][$cand];
+                    $val = trim((string)($row['value'] ?? ''));
+                    if ($val !== '') {
+                        $src = $val;
+                        $alt = trim((string)($row['alt'] ?? ''));
+                        break;
+                    }
+                }
+            }
         }
 
         // Default alt if not specified in DB
         if ($alt === '') {
-            $altKey = $key . '.alt';
-            if (isset(ContentCache::$data[$lang][$altKey]['value'])) {
-                $alt = (string)ContentCache::$data[$lang][$altKey]['value'];
-            } elseif (is_array($CONTENT_DEFAULTS) && !empty($CONTENT_DEFAULTS[$altKey])) {
-                $entry = $CONTENT_DEFAULTS[$altKey];
-                $alt = is_array($entry) ? (string)($entry['value'] ?? '') : (string)$entry;
-            } elseif (is_array($CONTENT_DEFAULTS) && isset($CONTENT_DEFAULTS[$key]) && is_array($CONTENT_DEFAULTS[$key]) && !empty($CONTENT_DEFAULTS[$key]['alt'])) {
-                $alt = (string)$CONTENT_DEFAULTS[$key]['alt'];
-            } else {
+            foreach ($candidates as $cand) {
+                $altKey = $cand . '.alt';
+                if (isset(ContentCache::$data[$lang][$altKey]['value'])) {
+                    $alt = (string)ContentCache::$data[$lang][$altKey]['value'];
+                    break;
+                } elseif (is_array($CONTENT_DEFAULTS) && !empty($CONTENT_DEFAULTS[$altKey])) {
+                    $entry = $CONTENT_DEFAULTS[$altKey];
+                    $alt = is_array($entry) ? (string)($entry['value'] ?? '') : (string)$entry;
+                    break;
+                } elseif (is_array($CONTENT_DEFAULTS) && isset($CONTENT_DEFAULTS[$cand]) && is_array($CONTENT_DEFAULTS[$cand]) && !empty($CONTENT_DEFAULTS[$cand]['alt'])) {
+                    $alt = (string)$CONTENT_DEFAULTS[$cand]['alt'];
+                    break;
+                }
+            }
+
+            if ($alt === '' && !empty($fallbackAlt)) {
+                $alt = $fallbackAlt;
+            }
+
+            if ($alt === '') {
                 $alts = [
                     'home.hero.image' => 'Façade métallique moderne en bardage plié, vue en perspective au crépuscule',
                     'home.training.image' => "Formation pratique au pliage industriel directement dans l'atelier d'une entreprise",
                     'home.zones.image' => "Carte stylisée des zones d'intervention : France, Tunisie et Maghreb",
+                    'home.services.s1_image' => "Plans techniques et modélisation 3D d'un profil métallique sur un bureau d'études",
+                    'home.services.s2_image' => "Pièce métallique pliée et poinçonnée en phase de prototypage",
+                    'home.services.s3_image' => "Détail de calepinage d'un bardage métallique avec joints et raccordements",
+                    'home.services.s4_image' => "Atelier de tôlerie industrielle avec presse plieuse et poinçonneuse, organisation des méthodes",
+                    'home.services.s5_image' => "Diagnostic technique sur site avec les équipes d'un atelier industriel",
+                    'home.services.s6_image' => "Formation pratique au pliage industriel en atelier",
                     's1.image' => "Plans techniques et modélisation 3D d'un profil métallique sur un bureau d'études",
                     's2.image' => "Pièce métallique pliée et poinçonnée en phase de prototypage",
                     's3.image' => "Détail de calepinage d'un bardage métallique avec joints et raccordements",
@@ -219,14 +316,34 @@ if (!function_exists('img')) {
                     's5.image' => "Diagnostic technique sur site avec les équipes d'un atelier industriel",
                     's6.image' => "Formation pratique au pliage industriel en atelier",
                 ];
-                $alt = $alts[$key] ?? 'Illustration technique NOVA PRESTIGE';
+                foreach ($candidates as $cand) {
+                    if (isset($alts[$cand])) {
+                        $alt = $alts[$cand];
+                        break;
+                    }
+                }
+                if ($alt === '') {
+                    $alt = 'Illustration technique NOVA PRESTIGE';
+                }
             }
         }
 
         // If no src in DB, check defaults
-        if ($src === '' && is_array($CONTENT_DEFAULTS) && !empty($CONTENT_DEFAULTS[$key])) {
-            $entry = $CONTENT_DEFAULTS[$key];
-            $src = is_array($entry) ? trim((string)($entry['value'] ?? '')) : trim((string)$entry);
+        if ($src === '' && is_array($CONTENT_DEFAULTS)) {
+            foreach ($candidates as $cand) {
+                if (!empty($CONTENT_DEFAULTS[$cand])) {
+                    $entry = $CONTENT_DEFAULTS[$cand];
+                    $src = is_array($entry) ? trim((string)($entry['value'] ?? '')) : trim((string)$entry);
+                    if ($src !== '') {
+                        break;
+                    }
+                }
+            }
+        }
+
+        // If still empty, check fallbackSrc
+        if ($src === '' && !empty($fallbackSrc)) {
+            $src = $fallbackSrc;
         }
 
         // If still empty, return placeholder
@@ -369,10 +486,48 @@ if (!function_exists('seo')) {
      */
     function seo(string $page_key): array
     {
+        $defaultPageSeo = [
+            'bureau-etudes-faisabilite' => [
+                'title' => 'Bureau d\'études techniques & faisabilité industrielle | NOVA PRESTIGE',
+                'description' => 'Études techniques, calculs de structures et analyse de fabricabilité pour la tôlerie industrielle, la métallerie et les façades. 40+ ans d\'expertise.'
+            ],
+            'prototypes-developpement-produits' => [
+                'title' => 'Prototypes métalliques & développement de produits industriels | NOVA PRESTIGE',
+                'description' => 'De la 3D au prototype physique : validation du pliage, des outillages et des tolérances avant lancement grande série en tôlerie. 40+ ans d\'expertise.'
+            ],
+            'facades-metalliques-bardage-calepinage' => [
+                'title' => 'Façades métalliques, cassettes & calepinage de bardage | NOVA PRESTIGE',
+                'description' => 'Études d\'enveloppe du bâtiment, calepinage de cassettes de façade, gestion de la dilatation thermique et fiches de pliage atelier. 40+ ans d\'expérience.'
+            ],
+            'methodes-industrialisation' => [
+                'title' => 'Méthodes & industrialisation tôlerie : productivité atelier | NOVA PRESTIGE',
+                'description' => 'Optimisation des gammes de pliage, standardisation d\'outillages de presses plieuses et réduction des temps de calage. 40+ ans d\'expertise atelier.'
+            ],
+            'conseil-industriel-equipements' => [
+                'title' => 'Conseil industriel & audit presses plieuses et cisailles | NOVA PRESTIGE',
+                'description' => 'Aide à l\'investissement machine 100% indépendante, audit géométrique de parcs plieuses et cisailles, cahier des charges CCTP. 40+ ans d\'expertise.'
+            ],
+            'formation-technique-atelier' => [
+                'title' => 'Formation technique pliage sur presse plieuse en atelier | NOVA PRESTIGE',
+                'description' => 'Formation pratique sur site pour opérateurs et régleurs en tôlerie industrielle. Réglages, retour élastique, outillages et sécurité. 40+ ans d\'expérience.'
+            ],
+            'france-tunisie-maghreb' => [
+                'title' => 'Zones d\'intervention : France, Tunisie & Maghreb | NOVA PRESTIGE',
+                'description' => 'Missions sur site et études à distance pour l\'industrie métallurgique et la tôlerie en France, en Tunisie et au Maghreb. Réactivité et mobilité.'
+            ],
+            'a-propos' => [
+                'title' => 'À propos de NOVA PRESTIGE | 40 ans d\'expertise tôlerie et façades',
+                'description' => 'Découvrez le parcours, les valeurs et les engagements de NOVA PRESTIGE. 40+ ans de pratique terrain en tôlerie industrielle, pliage et enveloppe du bâtiment.'
+            ],
+        ];
+
         $titleKey = "seo.{$page_key}.title";
         $descKey = "seo.{$page_key}.description";
 
         $title = t($titleKey);
+        if ($title === '' && isset($defaultPageSeo[$page_key]['title'])) {
+            $title = $defaultPageSeo[$page_key]['title'];
+        }
         if ($title === '') {
             $title = t('seo.title');
         }
@@ -384,6 +539,9 @@ if (!function_exists('seo')) {
         }
 
         $desc = t($descKey);
+        if ($desc === '' && isset($defaultPageSeo[$page_key]['description'])) {
+            $desc = $defaultPageSeo[$page_key]['description'];
+        }
         if ($desc === '') {
             $desc = t('seo.description');
         }
@@ -414,7 +572,8 @@ if (!function_exists('bootstrap_content_cache')) {
             $stmt = $pdo->prepare(
                 "SELECT page_key, field_key, lang, type, value, alt 
                  FROM contents 
-                 WHERE page_key IN (?, 'global', 'home')"
+                 WHERE page_key IN (?, 'global', 'home')
+                 ORDER BY updated_at ASC"
             );
             $stmt->execute([$page_key]);
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -422,18 +581,21 @@ if (!function_exists('bootstrap_content_cache')) {
             foreach ($rows as $row) {
                 $lang = $row['lang'] ?? 'fr';
                 $field = $row['field_key'];
-                $fullKey = $row['page_key'] . '.' . $field;
+                $entry = [
+                    'type' => $row['type'],
+                    'value' => $row['value'],
+                    'alt' => $row['alt'],
+                ];
 
-                ContentCache::$data[$lang][$field] = [
-                    'type' => $row['type'],
-                    'value' => $row['value'],
-                    'alt' => $row['alt'],
-                ];
-                ContentCache::$data[$lang][$fullKey] = [
-                    'type' => $row['type'],
-                    'value' => $row['value'],
-                    'alt' => $row['alt'],
-                ];
+                ContentCache::$data[$lang][$field] = $entry;
+
+                if (str_starts_with($field, $row['page_key'] . '.')) {
+                    $shortKey = substr($field, strlen($row['page_key']) + 1);
+                    ContentCache::$data[$lang][$shortKey] = $entry;
+                } else {
+                    $fullKey = $row['page_key'] . '.' . $field;
+                    ContentCache::$data[$lang][$fullKey] = $entry;
+                }
             }
 
             // Also load settings table

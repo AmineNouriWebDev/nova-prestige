@@ -7,7 +7,7 @@ $seo_data = function_exists('seo') ? seo('home') : [
 ];
 include __DIR__ . '/../partials/head.php';
 ?>
-<body class="bg-np-bg text-np-text font-inter antialiased selection:bg-np-accent selection:text-white" <?= function_exists('is_admin') && is_admin() ? 'data-admin="1"' : '' ?> id="top">
+<body class="bg-np-bg text-np-text font-inter antialiased selection:bg-np-accent selection:text-white" data-page="home" <?= function_exists('is_admin') && is_admin() ? 'data-admin="1"' : '' ?> id="top">
 
   <!-- Accessibility Skip link -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 bg-np-accent text-white px-5 py-2.5 rounded-md shadow-xl z-50 font-medium">Aller au contenu principal</a>
@@ -45,7 +45,7 @@ include __DIR__ . '/../partials/head.php';
         <?php 
           $hero_img = function_exists('img') ? img('home.hero.image') : ['src' => '/assets/img/home-hero.webp', 'alt' => 'Façade métallique moderne']; 
         ?>
-        <?php if (!empty($hero_img['src']) && file_exists(dirname(__DIR__, 2) . '/public' . $hero_img['src'])): ?>
+        <?php if (!empty($hero_img['src']) && (str_starts_with($hero_img['src'], 'data:') || str_starts_with($hero_img['src'], 'http') || file_exists(dirname(__DIR__, 2) . '/public' . $hero_img['src']))): ?>
           <img src="<?= e($hero_img['src']) ?>" 
                alt="<?= e($hero_img['alt']) ?>" 
                class="w-full h-full object-cover object-center opacity-30 transform scale-105 transition-transform duration-1000 ease-out"
@@ -61,8 +61,8 @@ include __DIR__ . '/../partials/head.php';
         <?php endif; ?>
         
         <!-- Multi-layer contrast gradients -->
-        <div class="absolute inset-0 bg-gradient-to-r from-np-primary via-np-primary/90 to-transparent"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-np-primary via-transparent to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-np-primary via-np-primary/90 to-transparent pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-np-primary via-transparent to-transparent pointer-events-none"></div>
       </div>
 
       <!-- Hero Content -->
@@ -106,7 +106,7 @@ include __DIR__ . '/../partials/head.php';
           <div class="flex flex-wrap items-center gap-4 mb-10 reveal-up">
             <a href="/contact?type=projet" 
                class="btn-primary btn-magnetic inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-np-accent hover:bg-np-accent/90 text-white font-semibold text-sm shadow-lg hover:shadow-np-accent/20 transition-all duration-200">
-              <span><?= e(t('home.hero.cta_project', 'Présenter mon projet')) ?></span>
+              <span data-edit="home.hero.cta_project" data-type="text"><?= e(t('home.hero.cta_project', 'Présenter mon projet')) ?></span>
               <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
               </svg>
@@ -114,25 +114,25 @@ include __DIR__ . '/../partials/head.php';
 
             <a href="/contact?type=devis" 
                class="btn-secondary inline-flex items-center justify-center px-6 py-3.5 rounded-lg border-2 border-white/80 hover:border-white text-white hover:bg-white hover:text-np-primary font-semibold text-sm transition-all duration-200">
-              <span><?= e(t('home.hero.cta_quote', 'Demander un devis')) ?></span>
+              <span data-edit="home.hero.cta_quote" data-type="text"><?= e(t('home.hero.cta_quote', 'Demander un devis')) ?></span>
             </a>
 
             <a href="/contact" 
                class="btn-text inline-flex items-center text-sm font-mono text-blue-200 hover:text-np-accent transition-colors px-2 py-2">
-              <span><?= e(t('home.hero.cta_contact', 'Me contacter →')) ?></span>
+              <span data-edit="home.hero.cta_contact" data-type="text"><?= e(t('home.hero.cta_contact', 'Me contacter →')) ?></span>
             </a>
           </div>
           
           <!-- Badges -->
           <div class="flex flex-wrap gap-2.5 sm:gap-3 reveal-up">
             <span class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 text-white text-xs sm:text-sm font-mono shadow-sm transition-colors">
-              <span class="text-np-accent">✓</span> <?= e(t('home.hero.badge1')) ?>
+              <span class="text-np-accent">✓</span> <span data-edit="home.hero.badge1" data-type="text"><?= e(t('home.hero.badge1', '40+ ans d\'expérience terrain')) ?></span>
             </span>
             <span class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 text-white text-xs sm:text-sm font-mono shadow-sm transition-colors">
-              <span class="text-np-accent">✓</span> <?= e(t('home.hero.badge2')) ?>
+              <span class="text-np-accent">✓</span> <span data-edit="home.hero.badge2" data-type="text"><?= e(t('home.hero.badge2', 'Expert tôlerie industrielle & façades')) ?></span>
             </span>
             <span class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 text-white text-xs sm:text-sm font-mono shadow-sm transition-colors">
-              <span class="text-np-accent">✓</span> <?= e(t('home.hero.badge3')) ?>
+              <span class="text-np-accent">✓</span> <span data-edit="home.hero.badge3" data-type="text"><?= e(t('home.hero.badge3', 'Intervention France & Maghreb')) ?></span>
             </span>
           </div>
 
@@ -162,41 +162,41 @@ include __DIR__ . '/../partials/head.php';
           <!-- Stat 1 -->
           <div class="stat-card border-l-2 border-np-accent pl-4 sm:pl-6 reveal-up">
             <div class="flex items-baseline gap-1 font-mono text-3xl sm:text-4xl lg:text-5xl font-bold text-np-accent">
-              <span class="counter-number" data-count="<?= e(t('home.stats.item1_val', '40')) ?>"><?= e(t('home.stats.item1_val', '40')) ?></span>
+              <span class="counter-number" data-count="<?= e(t('home.stats.item1_val', '40')) ?>" data-edit="home.stats.item1_val" data-type="text"><?= e(t('home.stats.item1_val', '40')) ?></span>
               <span><?= e(t('home.stats.item1_suffix', '+')) ?></span>
             </div>
-            <p class="text-xs sm:text-sm text-np-text-muted mt-2 font-medium leading-snug">
-              <?= e(t('home.stats.item1_label')) ?>
+            <p class="text-xs sm:text-sm text-np-text-muted mt-2 font-medium leading-snug" data-edit="home.stats.item1_label" data-type="text">
+              <?= e(t('home.stats.item1_label', 'Ans d\'expérience terrain')) ?>
             </p>
           </div>
 
           <!-- Stat 2 -->
           <div class="stat-card border-l-2 border-np-accent pl-4 sm:pl-6 reveal-up" style="--stagger: 1">
             <div class="flex items-baseline gap-1 font-mono text-3xl sm:text-4xl lg:text-5xl font-bold text-np-accent">
-              <span class="counter-number" data-count="<?= e(t('home.stats.item2_val', '6')) ?>"><?= e(t('home.stats.item2_val', '6')) ?></span>
+              <span class="counter-number" data-count="<?= e(t('home.stats.item2_val', '6')) ?>" data-edit="home.stats.item2_val" data-type="text"><?= e(t('home.stats.item2_val', '6')) ?></span>
             </div>
-            <p class="text-xs sm:text-sm text-np-text-muted mt-2 font-medium leading-snug">
-              <?= e(t('home.stats.item2_label')) ?>
+            <p class="text-xs sm:text-sm text-np-text-muted mt-2 font-medium leading-snug" data-edit="home.stats.item2_label" data-type="text">
+              <?= e(t('home.stats.item2_label', 'Pôles d\'expertise complémentaires')) ?>
             </p>
           </div>
 
           <!-- Stat 3 -->
           <div class="stat-card border-l-2 border-np-accent pl-4 sm:pl-6 reveal-up" style="--stagger: 2">
             <div class="flex items-baseline gap-1 font-mono text-3xl sm:text-4xl lg:text-5xl font-bold text-np-accent">
-              <span class="counter-number" data-count="<?= e(t('home.stats.item3_val', '3')) ?>"><?= e(t('home.stats.item3_val', '3')) ?></span>
+              <span class="counter-number" data-count="<?= e(t('home.stats.item3_val', '3')) ?>" data-edit="home.stats.item3_val" data-type="text"><?= e(t('home.stats.item3_val', '3')) ?></span>
             </div>
-            <p class="text-xs sm:text-sm text-np-text-muted mt-2 font-medium leading-snug">
-              <?= e(t('home.stats.item3_label')) ?>
+            <p class="text-xs sm:text-sm text-np-text-muted mt-2 font-medium leading-snug" data-edit="home.stats.item3_label" data-type="text">
+              <?= e(t('home.stats.item3_label', 'Zones d\'intervention (France, Tunisie, Maghreb)')) ?>
             </p>
           </div>
 
           <!-- Stat 4 -->
           <div class="stat-card border-l-2 border-np-accent pl-4 sm:pl-6 reveal-up" style="--stagger: 3">
             <div class="flex items-baseline gap-1 font-mono text-3xl sm:text-4xl lg:text-5xl font-bold text-np-accent">
-              <span class="counter-number" data-count="<?= e(t('home.stats.item4_val', '1')) ?>"><?= e(t('home.stats.item4_val', '1')) ?></span>
+              <span class="counter-number" data-count="<?= e(t('home.stats.item4_val', '1')) ?>" data-edit="home.stats.item4_val" data-type="text"><?= e(t('home.stats.item4_val', '1')) ?></span>
             </div>
-            <p class="text-xs sm:text-sm text-np-text-muted mt-2 font-medium leading-snug">
-              <?= e(t('home.stats.item4_label')) ?>
+            <p class="text-xs sm:text-sm text-np-text-muted mt-2 font-medium leading-snug" data-edit="home.stats.item4_label" data-type="text">
+              <?= e(t('home.stats.item4_label', 'Interlocuteur technique senior dédié')) ?>
             </p>
           </div>
 
@@ -251,14 +251,21 @@ include __DIR__ . '/../partials/head.php';
           <!-- Card 1 -->
           <article class="service-card group rounded-2xl bg-np-surface border border-np-border overflow-hidden hover:border-np-accent hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-up" style="--stagger: 0">
             <div>
-              <div class="h-48 w-full bg-slate-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-tr from-np-primary to-slate-800 opacity-90 group-hover:scale-105 transition-transform duration-500"></div>
-                <div class="absolute inset-0 flex items-center justify-center p-6 text-white/20 group-hover:text-np-accent/40 transition-colors">
-                  <svg class="w-16 h-16 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+              <?php $s1_img = function_exists('img') ? img('home.services.s1_image') : ['src' => '/assets/img/service-bureau-etudes.webp', 'alt' => 'Bureau d\'études']; ?>
+              <div class="h-48 sm:h-52 w-full bg-slate-900 relative overflow-hidden">
+                <img src="<?= e($s1_img['src']) ?>" 
+                     alt="<?= e($s1_img['alt']) ?>" 
+                     class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+                     loading="lazy" 
+                     decoding="async" 
+                     data-edit="home.services.s1_image" 
+                     data-type="image">
+                <div class="absolute inset-0 bg-gradient-to-t from-np-surface via-transparent to-black/30 pointer-events-none"></div>
+                <div class="absolute top-3.5 left-3.5 w-10 h-10 rounded-xl bg-slate-950/75 backdrop-blur-md border border-white/15 flex items-center justify-center text-np-accent shadow-lg group-hover:scale-110 group-hover:border-np-accent/50 group-hover:bg-slate-900/90 transition-all duration-300 z-10 pointer-events-none" aria-hidden="true" title="Expertise 01">
+                  <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                   </svg>
                 </div>
-                <span class="absolute top-4 left-4 font-mono text-xs text-white/80 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded">01</span>
               </div>
               <div class="p-6 sm:p-7">
                 <h3 class="font-grotesk font-bold text-lg sm:text-xl text-np-text group-hover:text-np-accent transition-colors mb-2.5" data-edit="home.services.s1_title" data-type="text">
@@ -280,14 +287,21 @@ include __DIR__ . '/../partials/head.php';
           <!-- Card 2 -->
           <article class="service-card group rounded-2xl bg-np-surface border border-np-border overflow-hidden hover:border-np-accent hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-up" style="--stagger: 1">
             <div>
-              <div class="h-48 w-full bg-slate-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-tr from-np-primary to-slate-800 opacity-90 group-hover:scale-105 transition-transform duration-500"></div>
-                <div class="absolute inset-0 flex items-center justify-center p-6 text-white/20 group-hover:text-np-accent/40 transition-colors">
-                  <svg class="w-16 h-16 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+              <?php $s2_img = function_exists('img') ? img('home.services.s2_image') : ['src' => '/assets/img/service-prototypes.webp', 'alt' => 'Prototypes & développement de produits']; ?>
+              <div class="h-48 sm:h-52 w-full bg-slate-900 relative overflow-hidden">
+                <img src="<?= e($s2_img['src']) ?>" 
+                     alt="<?= e($s2_img['alt']) ?>" 
+                     class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+                     loading="lazy" 
+                     decoding="async" 
+                     data-edit="home.services.s2_image" 
+                     data-type="image">
+                <div class="absolute inset-0 bg-gradient-to-t from-np-surface via-transparent to-black/30 pointer-events-none"></div>
+                <div class="absolute top-3.5 left-3.5 w-10 h-10 rounded-xl bg-slate-950/75 backdrop-blur-md border border-white/15 flex items-center justify-center text-np-accent shadow-lg group-hover:scale-110 group-hover:border-np-accent/50 group-hover:bg-slate-900/90 transition-all duration-300 z-10 pointer-events-none" aria-hidden="true" title="Expertise 02">
+                  <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                   </svg>
                 </div>
-                <span class="absolute top-4 left-4 font-mono text-xs text-white/80 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded">02</span>
               </div>
               <div class="p-6 sm:p-7">
                 <h3 class="font-grotesk font-bold text-lg sm:text-xl text-np-text group-hover:text-np-accent transition-colors mb-2.5" data-edit="home.services.s2_title" data-type="text">
@@ -309,14 +323,21 @@ include __DIR__ . '/../partials/head.php';
           <!-- Card 3 -->
           <article class="service-card group rounded-2xl bg-np-surface border border-np-border overflow-hidden hover:border-np-accent hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-up" style="--stagger: 2">
             <div>
-              <div class="h-48 w-full bg-slate-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-tr from-np-primary to-slate-800 opacity-90 group-hover:scale-105 transition-transform duration-500"></div>
-                <div class="absolute inset-0 flex items-center justify-center p-6 text-white/20 group-hover:text-np-accent/40 transition-colors">
-                  <svg class="w-16 h-16 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+              <?php $s3_img = function_exists('img') ? img('home.services.s3_image') : ['src' => '/assets/img/service-facades.webp', 'alt' => 'Façades métalliques & bardage']; ?>
+              <div class="h-48 sm:h-52 w-full bg-slate-900 relative overflow-hidden">
+                <img src="<?= e($s3_img['src']) ?>" 
+                     alt="<?= e($s3_img['alt']) ?>" 
+                     class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+                     loading="lazy" 
+                     decoding="async" 
+                     data-edit="home.services.s3_image" 
+                     data-type="image">
+                <div class="absolute inset-0 bg-gradient-to-t from-np-surface via-transparent to-black/30 pointer-events-none"></div>
+                <div class="absolute top-3.5 left-3.5 w-10 h-10 rounded-xl bg-slate-950/75 backdrop-blur-md border border-white/15 flex items-center justify-center text-np-accent shadow-lg group-hover:scale-110 group-hover:border-np-accent/50 group-hover:bg-slate-900/90 transition-all duration-300 z-10 pointer-events-none" aria-hidden="true" title="Expertise 03">
+                  <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
                   </svg>
                 </div>
-                <span class="absolute top-4 left-4 font-mono text-xs text-white/80 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded">03</span>
               </div>
               <div class="p-6 sm:p-7">
                 <h3 class="font-grotesk font-bold text-lg sm:text-xl text-np-text group-hover:text-np-accent transition-colors mb-2.5" data-edit="home.services.s3_title" data-type="text">
@@ -338,15 +359,22 @@ include __DIR__ . '/../partials/head.php';
           <!-- Card 4 -->
           <article class="service-card group rounded-2xl bg-np-surface border border-np-border overflow-hidden hover:border-np-accent hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-up" style="--stagger: 3">
             <div>
-              <div class="h-48 w-full bg-slate-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-tr from-np-primary to-slate-800 opacity-90 group-hover:scale-105 transition-transform duration-500"></div>
-                <div class="absolute inset-0 flex items-center justify-center p-6 text-white/20 group-hover:text-np-accent/40 transition-colors">
-                  <svg class="w-16 h-16 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+              <?php $s4_img = function_exists('img') ? img('home.services.s4_image') : ['src' => '/assets/img/service-methodes.webp', 'alt' => 'Méthodes & industrialisation']; ?>
+              <div class="h-48 sm:h-52 w-full bg-slate-900 relative overflow-hidden">
+                <img src="<?= e($s4_img['src']) ?>" 
+                     alt="<?= e($s4_img['alt']) ?>" 
+                     class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+                     loading="lazy" 
+                     decoding="async" 
+                     data-edit="home.services.s4_image" 
+                     data-type="image">
+                <div class="absolute inset-0 bg-gradient-to-t from-np-surface via-transparent to-black/30 pointer-events-none"></div>
+                <div class="absolute top-3.5 left-3.5 w-10 h-10 rounded-xl bg-slate-950/75 backdrop-blur-md border border-white/15 flex items-center justify-center text-np-accent shadow-lg group-hover:scale-110 group-hover:border-np-accent/50 group-hover:bg-slate-900/90 transition-all duration-300 z-10 pointer-events-none" aria-hidden="true" title="Expertise 04">
+                  <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
                 </div>
-                <span class="absolute top-4 left-4 font-mono text-xs text-white/80 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded">04</span>
               </div>
               <div class="p-6 sm:p-7">
                 <h3 class="font-grotesk font-bold text-lg sm:text-xl text-np-text group-hover:text-np-accent transition-colors mb-2.5" data-edit="home.services.s4_title" data-type="text">
@@ -368,14 +396,21 @@ include __DIR__ . '/../partials/head.php';
           <!-- Card 5 -->
           <article class="service-card group rounded-2xl bg-np-surface border border-np-border overflow-hidden hover:border-np-accent hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-up" style="--stagger: 4">
             <div>
-              <div class="h-48 w-full bg-slate-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-tr from-np-primary to-slate-800 opacity-90 group-hover:scale-105 transition-transform duration-500"></div>
-                <div class="absolute inset-0 flex items-center justify-center p-6 text-white/20 group-hover:text-np-accent/40 transition-colors">
-                  <svg class="w-16 h-16 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+              <?php $s5_img = function_exists('img') ? img('home.services.s5_image') : ['src' => '/assets/img/service-conseil.webp', 'alt' => 'Conseil industriel & équipements']; ?>
+              <div class="h-48 sm:h-52 w-full bg-slate-900 relative overflow-hidden">
+                <img src="<?= e($s5_img['src']) ?>" 
+                     alt="<?= e($s5_img['alt']) ?>" 
+                     class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+                     loading="lazy" 
+                     decoding="async" 
+                     data-edit="home.services.s5_image" 
+                     data-type="image">
+                <div class="absolute inset-0 bg-gradient-to-t from-np-surface via-transparent to-black/30 pointer-events-none"></div>
+                <div class="absolute top-3.5 left-3.5 w-10 h-10 rounded-xl bg-slate-950/75 backdrop-blur-md border border-white/15 flex items-center justify-center text-np-accent shadow-lg group-hover:scale-110 group-hover:border-np-accent/50 group-hover:bg-slate-900/90 transition-all duration-300 z-10 pointer-events-none" aria-hidden="true" title="Expertise 05">
+                  <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                   </svg>
                 </div>
-                <span class="absolute top-4 left-4 font-mono text-xs text-white/80 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded">05</span>
               </div>
               <div class="p-6 sm:p-7">
                 <h3 class="font-grotesk font-bold text-lg sm:text-xl text-np-text group-hover:text-np-accent transition-colors mb-2.5" data-edit="home.services.s5_title" data-type="text">
@@ -397,14 +432,21 @@ include __DIR__ . '/../partials/head.php';
           <!-- Card 6 -->
           <article class="service-card group rounded-2xl bg-np-surface border border-np-border overflow-hidden hover:border-np-accent hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-up" style="--stagger: 5">
             <div>
-              <div class="h-48 w-full bg-slate-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-tr from-np-primary to-slate-800 opacity-90 group-hover:scale-105 transition-transform duration-500"></div>
-                <div class="absolute inset-0 flex items-center justify-center p-6 text-white/20 group-hover:text-np-accent/40 transition-colors">
-                  <svg class="w-16 h-16 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.2">
+              <?php $s6_img = function_exists('img') ? img('home.services.s6_image') : ['src' => '/assets/img/service-formation.webp', 'alt' => 'Formation technique sur site']; ?>
+              <div class="h-48 sm:h-52 w-full bg-slate-900 relative overflow-hidden">
+                <img src="<?= e($s6_img['src']) ?>" 
+                     alt="<?= e($s6_img['alt']) ?>" 
+                     class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+                     loading="lazy" 
+                     decoding="async" 
+                     data-edit="home.services.s6_image" 
+                     data-type="image">
+                <div class="absolute inset-0 bg-gradient-to-t from-np-surface via-transparent to-black/30 pointer-events-none"></div>
+                <div class="absolute top-3.5 left-3.5 w-10 h-10 rounded-xl bg-slate-950/75 backdrop-blur-md border border-white/15 flex items-center justify-center text-np-accent shadow-lg group-hover:scale-110 group-hover:border-np-accent/50 group-hover:bg-slate-900/90 transition-all duration-300 z-10 pointer-events-none" aria-hidden="true" title="Expertise 06">
+                  <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="1.6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                   </svg>
                 </div>
-                <span class="absolute top-4 left-4 font-mono text-xs text-white/80 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded">06</span>
               </div>
               <div class="p-6 sm:p-7">
                 <h3 class="font-grotesk font-bold text-lg sm:text-xl text-np-text group-hover:text-np-accent transition-colors mb-2.5" data-edit="home.services.s6_title" data-type="text">
@@ -652,10 +694,10 @@ include __DIR__ . '/../partials/head.php';
             </div>
             <div>
               <h3 class="font-grotesk font-bold text-lg text-np-text mb-2" data-edit="home.why.item1_title" data-type="text">
-                <?= e(t('home.why.item1_title')) ?>
+                <?= e(t('home.why.item1_title', 'Expérience de terrain')) ?>
               </h3>
               <p class="text-sm text-np-text-muted leading-relaxed" data-edit="home.why.item1_text" data-type="text">
-                <?= e(t('home.why.item1_text')) ?>
+                <?= e(t('home.why.item1_text', 'Plus de 40 ans dans la construction métallique, la fabrication et les méthodes.')) ?>
               </p>
             </div>
           </div>
@@ -669,10 +711,10 @@ include __DIR__ . '/../partials/head.php';
             </div>
             <div>
               <h3 class="font-grotesk font-bold text-lg text-np-text mb-2" data-edit="home.why.item2_title" data-type="text">
-                <?= e(t('home.why.item2_title')) ?>
+                <?= e(t('home.why.item2_title', 'Solutions concrètes')) ?>
               </h3>
               <p class="text-sm text-np-text-muted leading-relaxed" data-edit="home.why.item2_text" data-type="text">
-                <?= e(t('home.why.item2_text')) ?>
+                <?= e(t('home.why.item2_text', 'Des recommandations réalistes, pensées pour votre atelier et vos équipements.')) ?>
               </p>
             </div>
           </div>
@@ -686,10 +728,10 @@ include __DIR__ . '/../partials/head.php';
             </div>
             <div>
               <h3 class="font-grotesk font-bold text-lg text-np-text mb-2" data-edit="home.why.item3_title" data-type="text">
-                <?= e(t('home.why.item3_title')) ?>
+                <?= e(t('home.why.item3_title', 'Missions flexibles')) ?>
               </h3>
               <p class="text-sm text-np-text-muted leading-relaxed" data-edit="home.why.item3_text" data-type="text">
-                <?= e(t('home.why.item3_text')) ?>
+                <?= e(t('home.why.item3_text', 'Intervention ponctuelle ou mission plus longue, sur site ou à distance.')) ?>
               </p>
             </div>
           </div>
@@ -703,10 +745,10 @@ include __DIR__ . '/../partials/head.php';
             </div>
             <div>
               <h3 class="font-grotesk font-bold text-lg text-np-text mb-2" data-edit="home.why.item4_title" data-type="text">
-                <?= e(t('home.why.item4_title')) ?>
+                <?= e(t('home.why.item4_title', 'Transfert de savoir-faire')) ?>
               </h3>
               <p class="text-sm text-np-text-muted leading-relaxed" data-edit="home.why.item4_text" data-type="text">
-                <?= e(t('home.why.item4_text')) ?>
+                <?= e(t('home.why.item4_text', 'Vos équipes repartent avec des méthodes qu\'elles savent appliquer.')) ?>
               </p>
             </div>
           </div>
@@ -729,7 +771,7 @@ include __DIR__ . '/../partials/head.php';
               <?php 
                 $train_img = function_exists('img') ? img('home.training.image') : ['src' => '/assets/img/service-formation.webp', 'alt' => 'Formation en atelier'];
               ?>
-              <?php if (!empty($train_img['src']) && file_exists(dirname(__DIR__, 2) . '/public' . $train_img['src'])): ?>
+              <?php if (!empty($train_img['src']) && (str_starts_with($train_img['src'], 'data:') || str_starts_with($train_img['src'], 'http') || file_exists(dirname(__DIR__, 2) . '/public' . $train_img['src']))): ?>
                 <img src="<?= e($train_img['src']) ?>" 
                      alt="<?= e($train_img['alt']) ?>" 
                      class="w-full h-80 sm:h-96 object-cover object-center group-hover:scale-105 transition-transform duration-500" 
@@ -768,23 +810,23 @@ include __DIR__ . '/../partials/head.php';
               <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-200 font-mono">
                 <li class="flex items-center gap-2.5">
                   <span class="text-np-accent font-bold">✓</span>
-                  <span><?= e(t('home.training.theme1')) ?></span>
+                  <span data-edit="home.training.theme1" data-type="text"><?= e(t('home.training.theme1', 'Pliage industriel (presse plieuse)')) ?></span>
                 </li>
                 <li class="flex items-center gap-2.5">
                   <span class="text-np-accent font-bold">✓</span>
-                  <span><?= e(t('home.training.theme2')) ?></span>
+                  <span data-edit="home.training.theme2" data-type="text"><?= e(t('home.training.theme2', 'Poinçonnage & cisaillage')) ?></span>
                 </li>
                 <li class="flex items-center gap-2.5">
                   <span class="text-np-accent font-bold">✓</span>
-                  <span><?= e(t('home.training.theme3')) ?></span>
+                  <span data-edit="home.training.theme3" data-type="text"><?= e(t('home.training.theme3', 'Méthodes de fabrication & débit')) ?></span>
                 </li>
                 <li class="flex items-center gap-2.5">
                   <span class="text-np-accent font-bold">✓</span>
-                  <span><?= e(t('home.training.theme4')) ?></span>
+                  <span data-edit="home.training.theme4" data-type="text"><?= e(t('home.training.theme4', 'Faisabilité & développement produits')) ?></span>
                 </li>
                 <li class="flex items-center gap-2.5 sm:col-span-2">
                   <span class="text-np-accent font-bold">✓</span>
-                  <span><?= e(t('home.training.theme5')) ?></span>
+                  <span data-edit="home.training.theme5" data-type="text"><?= e(t('home.training.theme5', 'Façades métalliques & calepinage')) ?></span>
                 </li>
               </ul>
             </div>
@@ -829,7 +871,7 @@ include __DIR__ . '/../partials/head.php';
             <?php 
               $zones_img = function_exists('img') ? img('home.zones.image') : ['src' => '/assets/img/home-zones.webp', 'alt' => 'Carte des zones d\'intervention'];
             ?>
-            <?php if (!empty($zones_img['src']) && file_exists(dirname(__DIR__, 2) . '/public' . $zones_img['src'])): ?>
+            <?php if (!empty($zones_img['src']) && (str_starts_with($zones_img['src'], 'data:') || str_starts_with($zones_img['src'], 'http') || file_exists(dirname(__DIR__, 2) . '/public' . $zones_img['src']))): ?>
               <img src="<?= e($zones_img['src']) ?>" 
                    alt="<?= e($zones_img['alt']) ?>" 
                    class="w-full h-full object-cover opacity-60" 

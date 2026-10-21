@@ -45,8 +45,8 @@ COPY docker/supervisord.conf /etc/supervisord.conf
 COPY docker/php.ini /usr/local/etc/php/conf.d/99-custom.ini
 
 # Create required directories and set permissions
-RUN mkdir -p /run/nginx /var/log/supervisor /var/log/nginx /var/www/html/public/uploads \
-    && chown -R www-data:www-data /var/www/html /run/nginx /var/log/nginx
+RUN mkdir -p /run/nginx /var/log/supervisor /var/log/nginx /var/lib/nginx/tmp/client_body /var/www/html/public/uploads \
+    && chown -R www-data:www-data /var/www/html /run/nginx /var/log/nginx /var/lib/nginx
 
 # Set working directory
 WORKDIR /var/www/html

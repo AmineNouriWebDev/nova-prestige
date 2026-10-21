@@ -26,16 +26,7 @@ initMagneticButtons();
 // Initialize marquee infinite tracks
 initMarquee();
 
-// Auto-load admin edit module if page is in admin mode
-if (document.body.getAttribute('data-admin') === '1') {
-  import('./admin-edit.js').then((module) => {
-    if (typeof module.initAdminEdit === 'function') {
-      module.initAdminEdit();
-    }
-  }).catch((err) => {
-    console.error('Failed to load admin module:', err);
-  });
-}
+
 
 function initLogoTripleClick() {
   const logo = document.getElementById('site-logo');

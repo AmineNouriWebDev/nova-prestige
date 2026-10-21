@@ -396,14 +396,26 @@
   .stagger-6 { --delay: 0.3s; }
   
   /* Marquee */
+  .marquee-container {
+    overflow: hidden;
+    width: 100%;
+  }
   .marquee-track {
-    animation: marquee 30s linear infinite;
+    display: flex;
+    width: max-content;
+    animation: marquee 35s linear infinite;
+    will-change: transform;
   }
   .marquee-container:hover .marquee-track {
     animation-play-state: paused;
   }
   @media (prefers-reduced-motion: reduce) {
     .marquee-track { animation: none; }
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
   
   /* Admin mode styles */
@@ -412,46 +424,62 @@
   }
   [data-admin='1'] [data-edit] {
     position: relative;
-    outline: 1px dashed rgb(var(--np-accent) / 0.3);
+    cursor: pointer;
+    outline: 1.5px dashed rgb(var(--np-accent) / 0.5);
+    outline-offset: 3px;
+    border-radius: 4px;
+    transition: outline-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+  }
+  [data-admin='1'] span[data-edit] {
+    display: inline-block;
   }
   [data-admin='1'] [data-edit]:hover {
-    outline-color: rgb(var(--np-accent));
+    outline: 2px dashed rgb(var(--np-accent));
+    background-color: rgb(var(--np-accent) / 0.1);
   }
   .edit-btn {
-    @apply absolute z-20 flex items-center justify-center w-8 h-8 rounded-full text-white shadow-lg cursor-pointer;
+    @apply absolute flex items-center justify-center w-7 h-7 rounded-full text-white shadow-lg cursor-pointer;
+    z-index: 40;
     background: rgb(var(--np-accent));
-    opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
-    transform: scale(0.8);
-    top: -12px; right: -12px;
+    opacity: 0.9;
+    transition: opacity 0.2s, transform 0.2s, background-color 0.2s;
+    transform: scale(0.9);
+    top: -8px; right: -8px;
+    pointer-events: auto;
   }
   [data-admin='1'] [data-edit]:hover .edit-btn,
-  [data-admin='1'] [data-edit]:focus-within .edit-btn {
+  [data-admin='1'] [data-edit]:focus-within .edit-btn,
+  .edit-btn:hover {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.1);
+    background: #e67635;
   }
   .admin-bar {
-    @apply fixed bottom-4 left-4 z-50 flex items-center gap-3 px-4 py-2 rounded-full text-white text-sm font-mono shadow-xl;
+    @apply fixed bottom-4 left-4 flex items-center gap-3 px-4 py-2 rounded-full text-white text-sm font-mono shadow-xl;
+    z-index: 99998 !important;
     background: rgb(var(--np-accent));
   }
   
   /* Modal */
   .modal-overlay {
-    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
-    background: rgb(0 0 0 / 0.6);
+    @apply fixed inset-0 flex items-center justify-center p-4;
+    z-index: 99999 !important;
+    background: rgb(0 0 0 / 0.65);
     backdrop-filter: blur(4px);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
   }
   .modal-overlay.is-open {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
   .modal-content {
     @apply relative bg-np-surface border border-np-border rounded-sm p-8 w-full max-w-md shadow-2xl;
     transform: scale(0.95) translateY(-20px);
-    transition: transform 0.3s;
+    transition: transform 0.25s ease;
   }
   .modal-overlay.is-open .modal-content {
     transform: scale(1) translateY(0);

@@ -6,14 +6,19 @@
 
 import { showToast } from './forms.js';
 
+// Global variables declared at the very top (avoids Temporal Dead Zone ReferenceError)
+let textModal = null;
+let imageFileInput = null;
+let seoModal = null;
+
 export function initAdminEdit() {
   if (document.body.getAttribute('data-admin') !== '1') return;
   if (window.__adminEditInitialized) return;
   window.__adminEditInitialized = true;
 
   injectAdminBar();
-  setupEditableElements();
   setupModals();
+  setupEditableElements();
 }
 
 // Auto-run if DOM is ready
@@ -77,187 +82,205 @@ function injectAdminBar() {
 }
 
 /**
+ * Modals container and templates
+ */
+function setupModals() {
+  if (document.getElementById('admin-text-modal')) {
+    textModal = document.getElementById('admin-text-modal');
+  } else {
+    // Create Text Edit Modal
+    textModal = document.createElement('div');
+    textModal.id = 'admin-text-modal';
+    textModal.className = 'modal-overlay';
+    textModal.setAttribute('role', 'dialog');
+    textModal.setAttribute('aria-modal', 'true');
+    textModal.innerHTML = `
+      <div class="modal-content max-w-xl">
+        <button type="button" class="modal-close absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-np-text-muted hover:text-np-text transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="label-tech" id="modal-field-tag">ÉDITION DE CONTENU</span>
+        </div>
+        <h3 class="font-grotesk font-bold text-xl mb-4 text-np-text" id="modal-field-title">Modifier le texte</h3>
+        <form id="admin-text-form">
+          <div class="mb-2">
+            <textarea id="modal-text-input" rows="6" class="form-textarea w-full font-inter text-sm" placeholder="Saisir le contenu..."></textarea>
+          </div>
+          <div class="flex justify-between items-center text-xs font-mono text-np-text-muted mb-6">
+            <span id="modal-char-count">0 caractères</span>
+            <span id="modal-word-count">0 mots</span>
+          </div>
+          <div class="flex justify-end gap-3">
+            <button type="button" class="btn-secondary px-4 py-2 text-xs modal-cancel">Annuler</button>
+            <button type="submit" class="btn-primary px-5 py-2 text-xs" id="modal-text-save">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(textModal);
+  }
+
+  if (document.getElementById('admin-seo-modal')) {
+    seoModal = document.getElementById('admin-seo-modal');
+  } else {
+    // Create SEO Panel Modal
+    seoModal = document.createElement('div');
+    seoModal.id = 'admin-seo-modal';
+    seoModal.className = 'modal-overlay';
+    seoModal.setAttribute('role', 'dialog');
+    seoModal.setAttribute('aria-modal', 'true');
+    seoModal.innerHTML = `
+      <div class="modal-content max-w-xl">
+        <button type="button" class="modal-close absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-np-text-muted hover:text-np-text transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="label-tech">RÉFÉRENCEMENT NATUREL</span>
+        </div>
+        <h3 class="font-grotesk font-bold text-xl mb-4 text-np-text">Balises SEO de la page</h3>
+        <form id="admin-seo-form">
+          <div class="mb-4">
+            <div class="flex justify-between items-center mb-1">
+              <label class="form-label text-xs mb-0" for="modal-seo-title">Titre de la page (title)</label>
+              <span class="text-xs font-mono text-np-text-muted" id="modal-seo-title-count">0/60</span>
+            </div>
+            <input type="text" id="modal-seo-title" class="form-input text-sm" placeholder="ex: NOVA PRESTIGE — Bureau d'études techniques">
+          </div>
+          <div class="mb-6">
+            <div class="flex justify-between items-center mb-1">
+              <label class="form-label text-xs mb-0" for="modal-seo-desc">Description (meta description)</label>
+              <span class="text-xs font-mono text-np-text-muted" id="modal-seo-desc-count">0/160</span>
+            </div>
+            <textarea id="modal-seo-desc" rows="4" class="form-textarea w-full font-inter text-sm" placeholder="ex: Expertise technique, calculs de structures et enveloppe de bâtiment..."></textarea>
+          </div>
+          <div class="flex justify-end gap-3">
+            <button type="button" class="btn-secondary px-4 py-2 text-xs modal-cancel">Annuler</button>
+            <button type="submit" class="btn-primary px-5 py-2 text-xs" id="modal-seo-save">Sauvegarder le SEO</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(seoModal);
+  }
+
+  // Pre-create hidden image file picker
+  if (!imageFileInput) {
+    imageFileInput = document.createElement('input');
+    imageFileInput.id = 'admin-image-file-input';
+    imageFileInput.type = 'file';
+    imageFileInput.accept = 'image/jpeg,image/png,image/webp,image/jpg';
+    imageFileInput.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;';
+    document.body.appendChild(imageFileInput);
+  }
+
+  // Setup modal close handlers
+  [textModal, seoModal].forEach(modal => {
+    if (!modal) return;
+    modal.querySelectorAll('.modal-close, .modal-cancel').forEach(btn => {
+      btn.onclick = () => modal.classList.remove('is-open');
+    });
+    modal.onclick = (e) => {
+      if (e.target === modal) modal.classList.remove('is-open');
+    };
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      textModal?.classList.remove('is-open');
+      seoModal?.classList.remove('is-open');
+    }
+  });
+}
+
+/**
  * Attaches pencil edit buttons to all [data-edit] elements
+ * Also enables direct click on any editable text/image
  */
 function setupEditableElements() {
   const editables = document.querySelectorAll('[data-edit]');
 
   editables.forEach(el => {
-    // Avoid double attaching
-    if (el.querySelector(':scope > .edit-btn')) return;
+    try {
+      if (el.dataset.adminBound === '1') return;
+      el.dataset.adminBound = '1';
 
-    const fieldKey = el.getAttribute('data-edit');
-    const isImage = el.tagName.toLowerCase() === 'img' ||
-                    el.getAttribute('data-edit-type') === 'image' ||
-                    (el.children.length === 1 && el.firstElementChild.tagName.toLowerCase() === 'img');
+      const fieldKey = el.getAttribute('data-edit');
+      if (!fieldKey) return;
 
-    // Create pencil button
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'edit-btn';
-    btn.title = `Modifier : ${fieldKey}`;
-    btn.setAttribute('aria-label', `Modifier : ${fieldKey}`);
-    btn.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-      </svg>
-    `;
+      const isImage = el.tagName.toLowerCase() === 'img' ||
+                      el.getAttribute('data-edit-type') === 'image' ||
+                      el.getAttribute('data-type') === 'image' ||
+                      (el.children.length === 1 && el.firstElementChild.tagName.toLowerCase() === 'img');
 
-    // Ensure parent has position relative
-    const style = window.getComputedStyle(el);
-    if (style.position === 'static') {
-      el.style.position = 'relative';
-    }
+      // Add visual title
+      el.title = isImage ? `Cliquer pour choisir une nouvelle image : ${fieldKey}` : `Cliquer pour modifier : ${fieldKey}`;
 
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+      // Handler to trigger the edit action
+      const handleEditAction = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-      if (isImage) {
-        openImageEditModal(el, fieldKey);
+        if (isImage) {
+          triggerImageFilePicker(el, fieldKey);
+        } else {
+          openTextEditModal(el, fieldKey);
+        }
+      };
+
+      // Clicking directly on the editable element
+      el.addEventListener('click', (e) => {
+        if (e.target.closest('.edit-btn')) return;
+        handleEditAction(e);
+      });
+
+      // Avoid double attaching button
+      if (el.querySelector(':scope > .edit-btn')) return;
+
+      // Create pencil button
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'edit-btn';
+      btn.title = isImage ? `Changer l'image : ${fieldKey}` : `Modifier : ${fieldKey}`;
+      btn.setAttribute('aria-label', btn.title);
+      btn.innerHTML = isImage ? `
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      ` : `
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+        </svg>
+      `;
+
+      btn.addEventListener('click', (e) => {
+        handleEditAction(e);
+      });
+
+      // Void elements like <img> cannot have children!
+      if (el.tagName.toLowerCase() === 'img') {
+        const parent = el.parentElement;
+        if (parent) {
+          const parentStyle = window.getComputedStyle(parent);
+          if (parentStyle.position === 'static') {
+            parent.style.position = 'relative';
+          }
+          btn.style.zIndex = '50';
+          btn.style.top = '16px';
+          btn.style.right = '16px';
+          parent.appendChild(btn);
+        }
       } else {
-        openTextEditModal(el, fieldKey);
+        const style = window.getComputedStyle(el);
+        if (style.position === 'static') {
+          el.style.position = 'relative';
+        }
+        el.appendChild(btn);
       }
-    });
-
-    el.appendChild(btn);
-  });
-}
-
-/**
- * Modals container and templates
- */
-let textModal, imageModal, seoModal;
-
-function setupModals() {
-  // Create Text Edit Modal
-  textModal = document.createElement('div');
-  textModal.id = 'admin-text-modal';
-  textModal.className = 'modal-overlay';
-  textModal.setAttribute('role', 'dialog');
-  textModal.setAttribute('aria-modal', 'true');
-  textModal.innerHTML = `
-    <div class="modal-content max-w-xl">
-      <button type="button" class="modal-close absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-np-text-muted hover:text-np-text">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-      <div class="flex items-center gap-2 mb-1">
-        <span class="label-tech" id="modal-field-tag">ÉDITION DE CONTENU</span>
-      </div>
-      <h3 class="font-grotesk font-bold text-xl mb-4 text-np-text" id="modal-field-title">Modifier le texte</h3>
-      <form id="admin-text-form">
-        <div class="mb-2">
-          <textarea id="modal-text-input" rows="6" class="form-textarea w-full font-inter text-sm" placeholder="Saisir le contenu..."></textarea>
-        </div>
-        <div class="flex justify-between items-center text-xs font-mono text-np-text-muted mb-6">
-          <span id="modal-char-count">0 caractères</span>
-          <span id="modal-word-count">0 mots</span>
-        </div>
-        <div class="flex justify-end gap-3">
-          <button type="button" class="btn-secondary px-4 py-2 text-xs modal-cancel">Annuler</button>
-          <button type="submit" class="btn-primary px-5 py-2 text-xs" id="modal-text-save">Enregistrer</button>
-        </div>
-      </form>
-    </div>
-  `;
-  document.body.appendChild(textModal);
-
-  // Create Image Edit Modal
-  imageModal = document.createElement('div');
-  imageModal.id = 'admin-image-modal';
-  imageModal.className = 'modal-overlay';
-  imageModal.setAttribute('role', 'dialog');
-  imageModal.setAttribute('aria-modal', 'true');
-  imageModal.innerHTML = `
-    <div class="modal-content max-w-lg">
-      <button type="button" class="modal-close absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-np-text-muted hover:text-np-text">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-      <div class="flex items-center gap-2 mb-1">
-        <span class="label-tech" id="modal-image-tag">GESTION D'IMAGE</span>
-      </div>
-      <h3 class="font-grotesk font-bold text-xl mb-4 text-np-text">Remplacer l'image</h3>
-      <form id="admin-image-form">
-        <div class="mb-4">
-          <label class="form-label text-xs">Aperçu actuel</label>
-          <div class="w-full h-40 bg-np-bg rounded border border-np-border overflow-hidden flex items-center justify-center">
-            <img id="modal-img-preview" src="" alt="Preview" class="max-w-full max-h-full object-contain">
-          </div>
-        </div>
-        <div class="mb-4">
-          <label class="form-label text-xs" for="modal-image-file">Nouveau fichier (JPG, PNG, WEBP, SVG)</label>
-          <input type="file" id="modal-image-file" accept="image/*" class="form-input text-xs cursor-pointer">
-        </div>
-        <div class="mb-4">
-          <label class="form-label text-xs" for="modal-image-alt">Texte alternatif (Accessibilité & SEO)</label>
-          <input type="text" id="modal-image-alt" class="form-input text-xs" placeholder="Description de l'image">
-        </div>
-        <div id="modal-image-progress-bar" class="w-full bg-np-border h-1.5 rounded-full overflow-hidden mb-4 hidden">
-          <div id="modal-image-progress-fill" class="bg-np-accent h-full w-0 transition-all duration-200"></div>
-        </div>
-        <div class="flex justify-end gap-3">
-          <button type="button" class="btn-secondary px-4 py-2 text-xs modal-cancel">Annuler</button>
-          <button type="submit" class="btn-primary px-5 py-2 text-xs" id="modal-image-save">Uploader et enregistrer</button>
-        </div>
-      </form>
-    </div>
-  `;
-  document.body.appendChild(imageModal);
-
-  // Create SEO Panel Modal
-  seoModal = document.createElement('div');
-  seoModal.id = 'admin-seo-modal';
-  seoModal.className = 'modal-overlay';
-  seoModal.setAttribute('role', 'dialog');
-  seoModal.setAttribute('aria-modal', 'true');
-  seoModal.innerHTML = `
-    <div class="modal-content max-w-xl">
-      <button type="button" class="modal-close absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-np-text-muted hover:text-np-text">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-      <div class="flex items-center gap-2 mb-1">
-        <span class="label-tech">RÉFÉRENCEMENT NATUREL</span>
-      </div>
-      <h3 class="font-grotesk font-bold text-xl mb-4 text-np-text">Balises SEO de la page</h3>
-      <form id="admin-seo-form">
-        <div class="mb-4">
-          <div class="flex justify-between items-center mb-1">
-            <label class="form-label text-xs mb-0" for="modal-seo-title">Titre de la page (title)</label>
-            <span class="text-xs font-mono text-np-text-muted" id="modal-seo-title-count">0/60</span>
-          </div>
-          <input type="text" id="modal-seo-title" class="form-input text-sm" placeholder="ex: NOVA PRESTIGE — Bureau d'études techniques">
-        </div>
-        <div class="mb-6">
-          <div class="flex justify-between items-center mb-1">
-            <label class="form-label text-xs mb-0" for="modal-seo-desc">Description (meta description)</label>
-            <span class="text-xs font-mono text-np-text-muted" id="modal-seo-desc-count">0/160</span>
-          </div>
-          <textarea id="modal-seo-desc" rows="4" class="form-textarea w-full font-inter text-sm" placeholder="ex: Expertise technique, calculs de structures et enveloppe de bâtiment..."></textarea>
-        </div>
-        <div class="flex justify-end gap-3">
-          <button type="button" class="btn-secondary px-4 py-2 text-xs modal-cancel">Annuler</button>
-          <button type="submit" class="btn-primary px-5 py-2 text-xs" id="modal-seo-save">Sauvegarder le SEO</button>
-        </div>
-      </form>
-    </div>
-  `;
-  document.body.appendChild(seoModal);
-
-  // Close handlers
-  [textModal, imageModal, seoModal].forEach(modal => {
-    modal.querySelectorAll('.modal-close, .modal-cancel').forEach(btn => {
-      btn.addEventListener('click', () => modal.classList.remove('is-open'));
-    });
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.classList.remove('is-open');
-    });
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      textModal.classList.remove('is-open');
-      imageModal.classList.remove('is-open');
-      seoModal.classList.remove('is-open');
+    } catch (err) {
+      console.warn('Error setting up editable element:', el, err);
     }
   });
 }
@@ -266,6 +289,11 @@ function setupModals() {
  * Text editing flow
  */
 function openTextEditModal(element, fieldKey) {
+  if (!textModal) {
+    setupModals();
+  }
+  if (!textModal) return;
+
   const pageKey = getPageKey();
   const textarea = textModal.querySelector('#modal-text-input');
   const tagEl = textModal.querySelector('#modal-field-tag');
@@ -297,7 +325,7 @@ function openTextEditModal(element, fieldKey) {
   updateCounts();
 
   textModal.classList.add('is-open');
-  setTimeout(() => textarea.focus(), 100);
+  setTimeout(() => textarea.focus(), 80);
 
   const form = textModal.querySelector('#admin-text-form');
   form.onsubmit = async (e) => {
@@ -305,6 +333,8 @@ function openTextEditModal(element, fieldKey) {
     const newValue = textarea.value;
     saveBtn.disabled = true;
     saveBtn.textContent = 'Enregistrement...';
+
+    const dataType = element.getAttribute('data-type') || 'text';
 
     try {
       const res = await fetch('/api/content-save', {
@@ -316,6 +346,7 @@ function openTextEditModal(element, fieldKey) {
         body: JSON.stringify({
           page_key: pageKey,
           field_key: fieldKey,
+          type: dataType,
           value: newValue,
           _csrf: getCsrfToken()
         })
@@ -326,7 +357,14 @@ function openTextEditModal(element, fieldKey) {
       if (res.ok && (data.success || data.ok)) {
         // Update DOM element preserving pencil button
         const btn = element.querySelector('.edit-btn');
-        element.textContent = newValue;
+        if (element.hasAttribute('data-count')) {
+          element.setAttribute('data-count', newValue);
+        }
+        if (dataType === 'richtext') {
+          element.innerHTML = newValue;
+        } else {
+          element.textContent = newValue;
+        }
         if (btn) element.appendChild(btn);
 
         textModal.classList.remove('is-open');
@@ -345,70 +383,54 @@ function openTextEditModal(element, fieldKey) {
 }
 
 /**
- * Image editing flow
+ * Image file picker flow:
+ * Directly opens OS file explorer when user clicks to change an image,
+ * then uploads and updates the image automatically.
  */
-function openImageEditModal(element, fieldKey) {
+function triggerImageFilePicker(element, fieldKey) {
   const pageKey = getPageKey();
-  const imgTarget = element.tagName.toLowerCase() === 'img' ? element : element.querySelector('img');
-  const preview = imageModal.querySelector('#modal-img-preview');
-  const fileInput = imageModal.querySelector('#modal-image-file');
-  const altInput = imageModal.querySelector('#modal-image-alt');
-  const tagEl = imageModal.querySelector('#modal-image-tag');
-  const saveBtn = imageModal.querySelector('#modal-image-save');
-  const progressBox = imageModal.querySelector('#modal-image-progress-bar');
-  const progressFill = imageModal.querySelector('#modal-image-progress-fill');
+  let imgTarget = element.tagName.toLowerCase() === 'img' ? element : element.querySelector('img');
 
-  tagEl.textContent = `${pageKey} · ${fieldKey}`.toUpperCase();
-  fileInput.value = '';
-  progressBox.classList.add('hidden');
-  progressFill.style.width = '0%';
-
-  if (imgTarget) {
-    preview.src = imgTarget.src;
-    altInput.value = imgTarget.getAttribute('alt') || '';
+  if (!imageFileInput) {
+    imageFileInput = document.getElementById('admin-image-file-input');
+  }
+  if (!imageFileInput) {
+    imageFileInput = document.createElement('input');
+    imageFileInput.id = 'admin-image-file-input';
+    imageFileInput.type = 'file';
+    imageFileInput.accept = 'image/jpeg,image/png,image/webp,image/jpg';
+    imageFileInput.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;';
+    document.body.appendChild(imageFileInput);
   }
 
-  fileInput.onchange = () => {
-    const file = fileInput.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        preview.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+  imageFileInput.value = '';
+  imageFileInput.onchange = async () => {
+    const file = imageFileInput.files?.[0];
+    if (!file) return;
+
+    showToast("Téléversement et optimisation de l'image en cours...", 'success');
+
+    // Immediate local preview for responsive UX
+    const tempUrl = URL.createObjectURL(file);
+    if (!imgTarget && element) {
+      imgTarget = element.querySelector('img');
+      if (!imgTarget) {
+        imgTarget = document.createElement('img');
+        imgTarget.className = 'w-full h-full object-cover';
+        element.appendChild(imgTarget);
+      }
     }
-  };
-
-  imageModal.classList.add('is-open');
-
-  const form = imageModal.querySelector('#admin-image-form');
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    const file = fileInput.files[0];
-    const newAlt = altInput.value;
-
-    if (!file && !newAlt) {
-      showToast('Aucune modification détectée.', 'error');
-      return;
+    if (imgTarget) {
+      imgTarget.src = tempUrl;
     }
-
-    saveBtn.disabled = true;
-    saveBtn.textContent = 'Téléversement...';
-    progressBox.classList.remove('hidden');
-    progressFill.style.width = '30%';
 
     try {
       const formData = new FormData();
+      formData.append('image', file);
       formData.append('page_key', pageKey);
       formData.append('field_key', fieldKey);
-      formData.append('alt', newAlt);
+      formData.append('alt', imgTarget?.getAttribute('alt') || '');
       formData.append('_csrf', getCsrfToken());
-
-      if (file) {
-        formData.append('image', file);
-      }
-
-      progressFill.style.width = '60%';
 
       const res = await fetch('/api/image-upload', {
         method: 'POST',
@@ -418,36 +440,44 @@ function openImageEditModal(element, fieldKey) {
         body: formData
       });
 
-      progressFill.style.width = '90%';
       const data = await res.json().catch(() => ({}));
 
       if (res.ok && (data.success || data.ok)) {
-        progressFill.style.width = '100%';
-        if (imgTarget) {
-          if (data.url || data.image_url) {
-            imgTarget.src = data.url || data.image_url;
-          }
-          imgTarget.setAttribute('alt', newAlt);
+        const finalUrl = data.src || data.url || data.image_url;
+        if (!imgTarget && element) {
+          imgTarget = element.querySelector('img');
         }
-        imageModal.classList.remove('is-open');
-        showToast('Image remplacée avec succès', 'success');
+        if (imgTarget && finalUrl) {
+          imgTarget.src = finalUrl;
+          if (data.srcset) {
+            imgTarget.srcset = data.srcset;
+          } else {
+            imgTarget.removeAttribute('srcset');
+          }
+        }
+        showToast('Image remplacée et enregistrée avec succès !', 'success');
       } else {
-        showToast(data.error || 'Erreur lors du téléversement.', 'error');
+        showToast(data.error || "Erreur lors du téléversement de l'image.", 'error');
       }
     } catch (err) {
       console.error(err);
       showToast('Erreur réseau lors du téléversement.', 'error');
-    } finally {
-      saveBtn.disabled = false;
-      saveBtn.textContent = 'Uploader et enregistrer';
     }
   };
+
+  // Open the file dialog
+  imageFileInput.click();
 }
 
 /**
  * SEO metadata modal
  */
 function openSeoModal() {
+  if (!seoModal) {
+    setupModals();
+  }
+  if (!seoModal) return;
+
   const pageKey = getPageKey();
   const titleInput = seoModal.querySelector('#modal-seo-title');
   const descInput = seoModal.querySelector('#modal-seo-desc');
@@ -473,7 +503,7 @@ function openSeoModal() {
   updateSeoCounts();
 
   seoModal.classList.add('is-open');
-  setTimeout(() => titleInput.focus(), 100);
+  setTimeout(() => titleInput.focus(), 80);
 
   const form = seoModal.querySelector('#admin-seo-form');
   form.onsubmit = async (e) => {

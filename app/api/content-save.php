@@ -49,6 +49,39 @@ $type = strtolower(trim((string)($input['type'] ?? 'text')));
 $value = (string)($input['value'] ?? '');
 $alt = isset($input['alt']) ? trim((string)$input['alt']) : null;
 
+// Support SEO Modal bulk save
+if (isset($input['seo']) && is_array($input['seo'])) {
+    if ($page_key === '') {
+        $page_key = 'home';
+    }
+    $seoTitle = trim(strip_tags((string)($input['seo']['title'] ?? '')));
+    $seoDesc = trim(strip_tags((string)($input['seo']['description'] ?? '')));
+    
+    $seoTitleKey = $page_key === 'home' ? 'seo.title' : "seo.{$page_key}.title";
+    $seoDescKey = $page_key === 'home' ? 'seo.description' : "seo.{$page_key}.description";
+
+    $stmt = $pdo->prepare(
+        "INSERT INTO contents (page_key, field_key, lang, type, value, updated_at)
+         VALUES (:page_key, :field_key, :lang, 'text', :value, NOW())
+         ON DUPLICATE KEY UPDATE type='text', value=VALUES(value), updated_at=NOW()"
+    );
+
+    if ($seoTitle !== '') {
+        $stmt->execute(['page_key' => $page_key, 'field_key' => $seoTitleKey, 'lang' => $lang, 'value' => $seoTitle]);
+        if ($page_key !== 'home') {
+            $stmt->execute(['page_key' => 'global', 'field_key' => $seoTitleKey, 'lang' => $lang, 'value' => $seoTitle]);
+        }
+    }
+    if ($seoDesc !== '') {
+        $stmt->execute(['page_key' => $page_key, 'field_key' => $seoDescKey, 'lang' => $lang, 'value' => $seoDesc]);
+        if ($page_key !== 'home') {
+            $stmt->execute(['page_key' => 'global', 'field_key' => $seoDescKey, 'lang' => $lang, 'value' => $seoDesc]);
+        }
+    }
+
+    json_response(['success' => true, 'message' => 'Balises SEO enregistrées avec succès']);
+}
+
 // 4. Validate fields
 if ($page_key === '' || strlen($page_key) > 60) {
     json_response(['error' => 'La clé de page est obligatoire (max 60 caractères).'], 422);
@@ -102,40 +135,73 @@ if ($alt !== null) {
 
 // 6. Save to database
 try {
-    if ($alt !== null) {
-        $stmt = $pdo->prepare(
-            "INSERT INTO contents (page_key, field_key, lang, type, value, alt, updated_at)
-             VALUES (:page_key, :field_key, :lang, :type, :value, :alt, NOW())
-             ON DUPLICATE KEY UPDATE
-               type = VALUES(type),
-               value = VALUES(value),
-               alt = VALUES(alt),
-               updated_at = NOW()"
-        );
-        $stmt->execute([
-            'page_key' => $page_key,
-            'field_key' => $field_key,
-            'lang' => $lang,
-            'type' => $type,
-            'value' => $value,
-            'alt' => $alt,
-        ]);
+    // Collect keys to synchronize (full, short, and aliases)
+    $keysToSync = [$field_key];
+    if (str_starts_with($field_key, $page_key . '.')) {
+        $keysToSync[] = substr($field_key, strlen($page_key) + 1);
     } else {
-        $stmt = $pdo->prepare(
-            "INSERT INTO contents (page_key, field_key, lang, type, value, updated_at)
-             VALUES (:page_key, :field_key, :lang, :type, :value, NOW())
-             ON DUPLICATE KEY UPDATE
-               type = VALUES(type),
-               value = VALUES(value),
-               updated_at = NOW()"
-        );
-        $stmt->execute([
-            'page_key' => $page_key,
-            'field_key' => $field_key,
-            'lang' => $lang,
-            'type' => $type,
-            'value' => $value,
-        ]);
+        $keysToSync[] = $page_key . '.' . $field_key;
+    }
+
+    // Common aliases mapping
+    $knownAliases = [
+        'home.why.item1_title' => 'home.why.p1_title',
+        'home.why.item1_text' => 'home.why.p1_desc',
+        'home.why.item2_title' => 'home.why.p2_title',
+        'home.why.item2_text' => 'home.why.p2_desc',
+        'home.why.item3_title' => 'home.why.p3_title',
+        'home.why.item3_text' => 'home.why.p3_desc',
+        'home.why.item4_title' => 'home.why.p4_title',
+        'home.why.item4_text' => 'home.why.p4_desc',
+        'home.hero.cta_project' => 'home.hero.cta_primary',
+        'home.hero.cta_quote' => 'home.hero.cta_secondary',
+    ];
+    if (isset($knownAliases[$field_key])) {
+        $alias = $knownAliases[$field_key];
+        $keysToSync[] = $alias;
+        if (str_starts_with($alias, $page_key . '.')) {
+            $keysToSync[] = substr($alias, strlen($page_key) + 1);
+        }
+    }
+
+    $keysToSync = array_unique(array_filter($keysToSync));
+
+    foreach ($keysToSync as $syncKey) {
+        if ($alt !== null) {
+            $stmt = $pdo->prepare(
+                "INSERT INTO contents (page_key, field_key, lang, type, value, alt, updated_at)
+                 VALUES (:page_key, :field_key, :lang, :type, :value, :alt, NOW())
+                 ON DUPLICATE KEY UPDATE
+                   type = VALUES(type),
+                   value = VALUES(value),
+                   alt = VALUES(alt),
+                   updated_at = NOW()"
+            );
+            $stmt->execute([
+                'page_key' => $page_key,
+                'field_key' => $syncKey,
+                'lang' => $lang,
+                'type' => $type,
+                'value' => $value,
+                'alt' => $alt,
+            ]);
+        } else {
+            $stmt = $pdo->prepare(
+                "INSERT INTO contents (page_key, field_key, lang, type, value, updated_at)
+                 VALUES (:page_key, :field_key, :lang, :type, :value, NOW())
+                 ON DUPLICATE KEY UPDATE
+                   type = VALUES(type),
+                   value = VALUES(value),
+                   updated_at = NOW()"
+            );
+            $stmt->execute([
+                'page_key' => $page_key,
+                'field_key' => $syncKey,
+                'lang' => $lang,
+                'type' => $type,
+                'value' => $value,
+            ]);
+        }
     }
 
     json_response([

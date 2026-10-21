@@ -167,22 +167,58 @@ if ($lang === '') {
 
 if ($fieldKey !== '' && $pageKey !== '') {
     try {
-        $stmt = $pdo->prepare(
-            "INSERT INTO contents (page_key, field_key, lang, type, value, alt, updated_at)
-             VALUES (:page_key, :field_key, :lang, 'image', :value, :alt, NOW())
-             ON DUPLICATE KEY UPDATE
-               type = 'image',
-               value = VALUES(value),
-               alt = VALUES(alt),
-               updated_at = NOW()"
-        );
-        $stmt->execute([
-            'page_key' => $pageKey,
-            'field_key' => $fieldKey,
-            'lang' => $lang,
-            'value' => $mainUrl,
-            'alt' => $alt,
-        ]);
+        $keysToSync = [$fieldKey];
+        if (str_starts_with($fieldKey, $pageKey . '.')) {
+            $keysToSync[] = substr($fieldKey, strlen($pageKey) + 1);
+        } else {
+            $keysToSync[] = $pageKey . '.' . $fieldKey;
+        }
+
+        // Common aliases mapping
+        $aliases = [
+            'home.hero.image' => 'hero.image',
+            'hero.image' => 'home.hero.image',
+            'home.training.image' => 'training.image',
+            'training.image' => 'home.training.image',
+            'home.zones.image' => 'zones.image',
+            'zones.image' => 'home.zones.image',
+            'home.services.s1_image' => 'services.s1_image',
+            'services.s1_image' => 'home.services.s1_image',
+            'home.services.s2_image' => 'services.s2_image',
+            'services.s2_image' => 'home.services.s2_image',
+            'home.services.s3_image' => 'services.s3_image',
+            'services.s3_image' => 'home.services.s3_image',
+            'home.services.s4_image' => 'services.s4_image',
+            'services.s4_image' => 'home.services.s4_image',
+            'home.services.s5_image' => 'services.s5_image',
+            'services.s5_image' => 'home.services.s5_image',
+            'home.services.s6_image' => 'services.s6_image',
+            'services.s6_image' => 'home.services.s6_image',
+        ];
+        if (isset($aliases[$fieldKey])) {
+            $keysToSync[] = $aliases[$fieldKey];
+        }
+
+        $keysToSync = array_unique(array_filter($keysToSync));
+
+        foreach ($keysToSync as $syncKey) {
+            $stmt = $pdo->prepare(
+                "INSERT INTO contents (page_key, field_key, lang, type, value, alt, updated_at)
+                 VALUES (:page_key, :field_key, :lang, 'image', :value, :alt, NOW())
+                 ON DUPLICATE KEY UPDATE
+                   type = 'image',
+                   value = VALUES(value),
+                   alt = VALUES(alt),
+                   updated_at = NOW()"
+            );
+            $stmt->execute([
+                'page_key' => $pageKey,
+                'field_key' => $syncKey,
+                'lang' => $lang,
+                'value' => $mainUrl,
+                'alt' => $alt,
+            ]);
+        }
     } catch (\Throwable $e) {
         error_log("Failed to save image path to contents table: " . $e->getMessage());
     }
