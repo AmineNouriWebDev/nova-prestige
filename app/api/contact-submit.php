@@ -206,9 +206,79 @@ try {
     json_response(['error' => 'Une erreur technique est survenue lors de l\'enregistrement.'], 500);
 }
 
-// 8. Send notification email via PHPMailer if SMTP is configured
+// 8. Determine readable request type label
+$typeLabel = match ($requestType) {
+    'devis' => 'Demande de devis',
+    'contact' => 'Message de contact',
+    default => 'Étude de projet',
+};
+
+// 9. Forward submission to n8n automation webhook
+$n8nWebhookUrl = $_ENV['N8N_WEBHOOK_URL'] ?? 'https://n8n.deposark.com/webhook/aef80550-6348-402a-9718-fe58c5745b59';
+if (!empty($n8nWebhookUrl)) {
+    $n8nPayload = [
+        'nom' => $name,
+        'name' => $name,
+        'entreprise' => $company !== '' ? $company : 'Non renseignée',
+        'company' => $company,
+        'email' => $email,
+        'telephone' => $phone !== '' ? $phone : 'Non renseigné',
+        'phone' => $phone,
+        'pays' => $country,
+        'country' => $country,
+        'service' => $service !== '' ? $service : 'Non précisé',
+        'modalite' => $mode !== '' ? $mode : 'À définir',
+        'mode' => $mode !== '' ? $mode : 'À définir',
+        'type_demande' => $typeLabel,
+        'request_type' => $requestType,
+        'sujet' => "Demande {$typeLabel} - " . ($service !== '' ? $service : 'Général'),
+        'message' => $message,
+        'date' => date('d/m/Y à H:i'),
+        'ip' => $clientIp,
+        'source' => 'nova.maxsolving.com'
+    ];
+
+    try {
+        if (function_exists('curl_init')) {
+            $ch = curl_init($n8nWebhookUrl);
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => json_encode($n8nPayload, JSON_UNESCAPED_UNICODE),
+                CURLOPT_HTTPHEADER => [
+                    'Content-Type: application/json',
+                    'Accept: application/json'
+                ],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 4,
+                CURLOPT_CONNECTTIMEOUT => 2,
+                CURLOPT_SSL_VERIFYPEER => true,
+            ]);
+            $response = curl_exec($ch);
+            if (curl_errno($ch)) {
+                error_log("n8n webhook curl error: " . curl_error($ch));
+            }
+            curl_close($ch);
+        } else {
+            $context = stream_context_create([
+                'http' => [
+                    'method' => 'POST',
+                    'header' => "Content-Type: application/json\r\nAccept: application/json\r\n",
+                    'content' => json_encode($n8nPayload, JSON_UNESCAPED_UNICODE),
+                    'timeout' => 4,
+                    'ignore_errors' => true,
+                ]
+            ]);
+            @file_get_contents($n8nWebhookUrl, false, $context);
+        }
+    } catch (\Throwable $e) {
+        error_log("n8n webhook dispatch error: " . $e->getMessage());
+    }
+}
+
+// 10. Send notification email via PHPMailer if external SMTP is configured
 $smtpHost = $_ENV['SMTP_HOST'] ?? '';
-if (!empty($smtpHost) && class_exists(PHPMailer::class)) {
+$smtpUser = $_ENV['SMTP_USER'] ?? '';
+if (!empty($smtpHost) && $smtpHost !== 'localhost' && !empty($smtpUser) && class_exists(PHPMailer::class)) {
     try {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
@@ -234,12 +304,6 @@ if (!empty($smtpHost) && class_exists(PHPMailer::class)) {
 
         $recipientEmail = $_ENV['CONTACT_EMAIL'] ?? 'contact@novaprestige.fr';
         $mail->addAddress($recipientEmail, 'Administration NOVA PRESTIGE');
-
-        $typeLabel = match ($requestType) {
-            'devis' => 'Demande de devis',
-            'contact' => 'Message de contact',
-            default => 'Nouveau projet',
-        };
 
         $mail->isHTML(true);
         $mail->Subject = "[NOVA PRESTIGE] {$typeLabel} : {$name}";
