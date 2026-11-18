@@ -173,9 +173,10 @@ $footer_linkedin = function_exists('setting') ? setting('linkedin') : '';
       </div>
 
       <!-- Legal Links -->
-      <div class="flex items-center gap-6">
+      <div class="flex flex-wrap items-center justify-center gap-3 md:gap-6">
         <a href="/mentions-legales" class="hover:text-white transition-colors">Mentions légales</a>
         <a href="/politique-confidentialite" class="hover:text-white transition-colors">Politique de confidentialité</a>
+        <button type="button" data-consent-open class="hover:text-white transition-colors">Préférences cookies</button>
         
         <!-- Back to top button -->
         <a href="#top" 
@@ -192,6 +193,27 @@ $footer_linkedin = function_exists('setting') ? setting('linkedin') : '';
     </div>
   </div>
 </footer>
+
+<section id="analytics-consent" class="hidden fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-np-primary text-white shadow-2xl" aria-labelledby="analytics-consent-title" aria-describedby="analytics-consent-description">
+  <div class="container mx-auto flex flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-8">
+    <div class="max-w-3xl">
+      <h2 id="analytics-consent-title" class="font-grotesk text-base font-semibold">Respect de votre vie privée</h2>
+      <p id="analytics-consent-description" class="mt-1 text-sm leading-relaxed text-slate-200">
+        Avec votre accord, Google Tag Manager et les outils de mesure d’audience configurés dans ce conteneur peuvent utiliser des traceurs. Vous pouvez accepter ou refuser ; votre choix est modifiable à tout moment.
+        <a href="/politique-confidentialite" class="underline underline-offset-2 hover:text-white">En savoir plus</a>
+      </p>
+      <p data-consent-status class="mt-2 text-sm text-amber-200" aria-live="polite"></p>
+    </div>
+    <div class="flex shrink-0 flex-col gap-2 sm:flex-row">
+      <button type="button" data-consent-reject class="rounded-lg border border-white/40 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+        Tout refuser
+      </button>
+      <button type="button" data-consent-accept class="rounded-lg bg-np-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-np-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+        Accepter les traceurs
+      </button>
+    </div>
+  </div>
+</section>
 
 <!-- Core Application Scripts -->
 <?php if (function_exists('is_admin') && is_admin()): ?>

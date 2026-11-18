@@ -25,6 +25,15 @@ if (!isset($seo_data) && function_exists('seo')) {
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="<?= e(function_exists('csrf_token') ? csrf_token() : '') ?>">
+  <meta name="google-site-verification" content="vVvXzwjOYoqWVSj4ntZN28hCIPB1nah5LeoQHMGr-ic" />
+
+  <!-- Google Tag Manager / Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WKRK9KWH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
   
   <!-- Theme Color -->
   <meta name="theme-color" content="#12304F" media="(prefers-color-scheme: light)">
@@ -76,10 +85,12 @@ if (!isset($seo_data) && function_exists('seo')) {
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="512x512" href="/assets/img/favicon-512.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon-180.png">
+  <link rel="manifest" href="/site.webmanifest">
 
   <!-- CSS -->
   <link rel="stylesheet" href="/assets/css/app.css?v=<?= file_exists(dirname(__DIR__, 2) . '/public/assets/css/app.css') ? filemtime(dirname(__DIR__, 2) . '/public/assets/css/app.css') : time() ?>">
   <link rel="stylesheet" href="/assets/vendor/toastify/toastify.min.css">
+  <script src="/assets/js/consent.js?v=<?= file_exists(dirname(__DIR__, 2) . '/public/assets/js/consent.js') ? filemtime(dirname(__DIR__, 2) . '/public/assets/js/consent.js') : time() ?>" defer></script>
 
   <!-- Structured Data JSON-LD -->
   <?php require __DIR__ . '/jsonld.php'; ?>

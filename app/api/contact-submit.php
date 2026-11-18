@@ -235,7 +235,7 @@ if (!empty($n8nWebhookUrl)) {
         'message' => $message,
         'date' => date('d/m/Y à H:i'),
         'ip' => $clientIp,
-        'source' => 'nova.maxsolving.com'
+        'source' => parse_url($_ENV['APP_URL'] ?? 'https://novaprestige-industrie.fr', PHP_URL_HOST) ?: 'novaprestige-industrie.fr'
     ];
 
     try {

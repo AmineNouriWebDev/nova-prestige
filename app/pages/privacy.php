@@ -56,12 +56,21 @@ include __DIR__ . '/../partials/head.php';
         <section class="bg-np-surface border border-np-border rounded-xl p-6 sm:p-8">
           <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">3. Destinataires et transfert</h2>
           <p>
-            Aucune donnée collectée sur ce site n'est transmise, cédée, louée ou vendue à des tiers ou à des organismes commerciaux. Aucun traceur publicitaire tiers (Google Analytics, régies publicitaires, Facebook Pixel) n'est actif sur le site.
+            Les données envoyées via les formulaires sont utilisées par NOVA PRESTIGE pour traiter votre demande et ne sont ni vendues ni louées. Les outils de mesure d'audience de Google, chargés via Google Tag Manager, restent désactivés tant que vous n'avez pas donné votre accord. Si vous acceptez, des données de navigation et des informations techniques relatives à votre visite peuvent être transmises à Google conformément à sa
+            <a href="https://policies.google.com/privacy?hl=fr" target="_blank" rel="noopener noreferrer" class="text-np-accent underline underline-offset-2">politique de confidentialité</a>
+            et aux paramètres des outils configurés.
           </p>
         </section>
 
         <section class="bg-np-surface border border-np-border rounded-xl p-6 sm:p-8">
-          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">4. Vos droits d'accès et de rectification</h2>
+          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">4. Traceurs et choix de consentement</h2>
+          <p>
+            Google Tag Manager et les balises de mesure d'audience associées ne sont chargés qu'après votre accord explicite. Votre choix (acceptation ou refus) est mémorisé dans le stockage local de votre navigateur afin de ne pas vous le redemander à chaque visite. Vous pouvez le modifier à tout moment avec le lien « Préférences cookies » en bas de page.
+          </p>
+        </section>
+
+        <section class="bg-np-surface border border-np-border rounded-xl p-6 sm:p-8">
+          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">5. Vos droits d'accès et de rectification</h2>
           <p>
             Conformément à la réglementation applicable, vous pouvez exercer votre droit d'accès, de rectification, d'effacement de vos données ou de limitation du traitement en adressant un e-mail à :<br>
             <a href="mailto:contact@novaprestige.fr" class="text-np-accent hover:underline font-semibold">contact@novaprestige.fr</a>
