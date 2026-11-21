@@ -10,6 +10,8 @@ header('Content-Type: application/xml; charset=UTF-8');
 
 $pages = [
     '/',
+    '/projet-partenaires',
+    '/abris-metalliques-sur-mesure',
     '/bureau-etudes-faisabilite',
     '/prototypes-developpement-produits',
     '/facades-metalliques-bardage-calepinage',

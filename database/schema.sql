@@ -67,3 +67,17 @@ CREATE TABLE IF NOT EXISTS contact_requests (
   ip VARBINARY(16),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------------------------------
+-- 6. État de lecture des demandes (stockage séparé pour préserver l'historique)
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS contact_request_reads (
+  contact_request_id INT UNSIGNED PRIMARY KEY,
+  admin_user_id INT UNSIGNED NULL,
+  read_at DATETIME NOT NULL,
+  KEY idx_admin_user_read_at (admin_user_id, read_at),
+  CONSTRAINT fk_contact_request_reads_request
+    FOREIGN KEY (contact_request_id) REFERENCES contact_requests(id) ON DELETE CASCADE,
+  CONSTRAINT fk_contact_request_reads_admin
+    FOREIGN KEY (admin_user_id) REFERENCES admin_users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -480,6 +480,38 @@ if (!function_exists('is_admin')) {
     }
 }
 
+if (!function_exists('ensure_contact_request_reads_table')) {
+    function ensure_contact_request_reads_table(PDO $pdo): void
+    {
+        $pdo->exec(
+            "CREATE TABLE IF NOT EXISTS contact_request_reads (
+                contact_request_id INT UNSIGNED PRIMARY KEY,
+                admin_user_id INT UNSIGNED NULL,
+                read_at DATETIME NOT NULL,
+                KEY idx_admin_user_read_at (admin_user_id, read_at),
+                CONSTRAINT fk_contact_request_reads_request
+                    FOREIGN KEY (contact_request_id) REFERENCES contact_requests(id) ON DELETE CASCADE,
+                CONSTRAINT fk_contact_request_reads_admin
+                    FOREIGN KEY (admin_user_id) REFERENCES admin_users(id) ON DELETE SET NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+        );
+    }
+}
+
+if (!function_exists('contact_request_unread_count')) {
+    function contact_request_unread_count(PDO $pdo): int
+    {
+        ensure_contact_request_reads_table($pdo);
+        $stmt = $pdo->query(
+            "SELECT COUNT(*)
+             FROM contact_requests requests
+             LEFT JOIN contact_request_reads read_state ON read_state.contact_request_id = requests.id
+             WHERE read_state.contact_request_id IS NULL"
+        );
+        return (int)$stmt->fetchColumn();
+    }
+}
+
 if (!function_exists('seo')) {
     /**
      * Get SEO metadata for a page key: [ 'title' => ..., 'description' => ..., 'canonical' => ... ]
@@ -487,6 +519,14 @@ if (!function_exists('seo')) {
     function seo(string $page_key): array
     {
         $defaultPageSeo = [
+            'abris-metalliques-sur-mesure' => [
+                'title' => 'Abris et constructions métalliques sur mesure | NOVA PRESTIGE',
+                'description' => 'Abris de jardin, ateliers, locaux techniques, bureaux et studios de jardin métalliques sur mesure. Étude et accompagnement partout en France.'
+            ],
+            'projet-partenaires' => [
+                'title' => 'Notre projet industriel et recherche de partenaires | NOVA PRESTIGE',
+                'description' => 'NOVA PRESTIGE recherche des partenaires industriels et financiers pour développer une activité de façades métalliques, bardage, pliage et fabrication de pièces spécifiques.'
+            ],
             'bureau-etudes-faisabilite' => [
                 'title' => 'Bureau d\'études techniques & faisabilité industrielle | NOVA PRESTIGE',
                 'description' => 'Études techniques, calculs de structures et analyse de fabricabilité pour la tôlerie industrielle, la métallerie et les façades. 40+ ans d\'expertise.'

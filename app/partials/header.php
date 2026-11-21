@@ -2,8 +2,16 @@
 $header_phone = function_exists('setting') ? setting('phone') : '';
 $header_phone_display = function_exists('setting') ? setting('phone_display', $header_phone) : $header_phone;
 $current_page = $page_key ?? '';
+$adminUnreadCount = 0;
+if (function_exists('is_admin') && is_admin() && isset($pdo) && $pdo instanceof PDO) {
+    try {
+        $adminUnreadCount = contact_request_unread_count($pdo);
+    } catch (Throwable $e) {
+        error_log('Unable to count unread contact requests: ' . $e->getMessage());
+    }
+}
 ?>
-<header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-np-surface/85 backdrop-blur-md border-b border-np-border/60 dark:border-np-border/40" role="banner">
+<header id="site-header" data-admin-unread-count="<?= $adminUnreadCount ?>" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-np-surface/85 backdrop-blur-md border-b border-np-border/60 dark:border-np-border/40" role="banner">
   <!-- Scroll progress bar: thin copper line at very top -->
   <div id="scroll-progress" class="h-0.5 bg-np-accent absolute top-0 left-0 w-0 transition-all duration-75 ease-out" role="progressbar" aria-label="Progression de lecture" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
   
@@ -35,12 +43,12 @@ $current_page = $page_key ?? '';
       </a>
       
       <!-- Desktop Nav (lg+) -->
-      <div class="hidden lg:flex items-center gap-1 xl:gap-2">
+      <div class="hidden lg:flex items-center gap-0 xl:gap-1 whitespace-nowrap">
         <!-- Mega-menu trigger for Expertises -->
         <div class="relative" id="mega-menu-wrapper">
           <button type="button" 
                   id="mega-menu-trigger" 
-                  class="flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium transition-colors rounded-md text-np-text hover:text-np-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-np-accent" 
+                  class="flex items-center gap-1 px-2 py-2 text-xs font-medium transition-colors rounded-md text-np-text hover:text-np-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-np-accent whitespace-nowrap"
                   aria-expanded="false" 
                   aria-haspopup="true" 
                   aria-controls="mega-menu-panel">
@@ -52,28 +60,48 @@ $current_page = $page_key ?? '';
         </div>
 
         <a href="/formation-technique-atelier" 
-           class="px-3.5 py-2 text-sm font-medium transition-colors rounded-md <?= $current_page === 'formation-technique-atelier' ? 'text-np-accent font-semibold' : 'text-np-text hover:text-np-accent' ?>"
+           class="px-2 py-2 text-xs font-medium transition-colors rounded-md whitespace-nowrap <?= $current_page === 'formation-technique-atelier' ? 'text-np-accent font-semibold' : 'text-np-text hover:text-np-accent' ?>"
            <?= $current_page === 'formation-technique-atelier' ? 'aria-current="page"' : '' ?>>
           Formation
         </a>
 
         <a href="/france-tunisie-maghreb" 
-           class="px-3.5 py-2 text-sm font-medium transition-colors rounded-md <?= $current_page === 'france-tunisie-maghreb' ? 'text-np-accent font-semibold' : 'text-np-text hover:text-np-accent' ?>"
+           class="px-2 py-2 text-xs font-medium transition-colors rounded-md whitespace-nowrap <?= $current_page === 'france-tunisie-maghreb' ? 'text-np-accent font-semibold' : 'text-np-text hover:text-np-accent' ?>"
            <?= $current_page === 'france-tunisie-maghreb' ? 'aria-current="page"' : '' ?>>
           Zones d'intervention
         </a>
 
+        <a href="/projet-partenaires"
+           class="px-2 py-2 text-xs font-semibold transition-colors rounded-md text-np-accent hover:text-np-accent/80 whitespace-nowrap">
+          Partenaires
+        </a>
+
+        <a href="/abris-metalliques-sur-mesure"
+           class="px-2 py-2 text-xs font-semibold transition-colors rounded-md text-np-text hover:text-np-accent whitespace-nowrap">
+          Abris sur mesure
+        </a>
+
         <a href="/a-propos" 
-           class="px-3.5 py-2 text-sm font-medium transition-colors rounded-md <?= $current_page === 'a-propos' ? 'text-np-accent font-semibold' : 'text-np-text hover:text-np-accent' ?>"
+           class="px-2 py-2 text-xs font-medium transition-colors rounded-md whitespace-nowrap <?= $current_page === 'a-propos' ? 'text-np-accent font-semibold' : 'text-np-text hover:text-np-accent' ?>"
            <?= $current_page === 'a-propos' ? 'aria-current="page"' : '' ?>>
           À propos
         </a>
       </div>
 
       <!-- Desktop Right Controls -->
-      <div class="hidden lg:flex items-center gap-3">
+      <div class="hidden lg:flex items-center gap-2">
+        <?php if (function_exists('is_admin') && is_admin()): ?>
+        <a href="/admin/messages" class="relative inline-flex h-10 w-10 items-center justify-center rounded-lg border border-np-border/50 text-np-text-muted transition hover:border-np-accent hover:text-np-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-np-accent" aria-label="Messagerie, <?= $adminUnreadCount ?> message<?= $adminUnreadCount === 1 ? '' : 's' ?> non lu<?= $adminUnreadCount === 1 ? '' : 's' ?>" title="Messagerie">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+          </svg>
+          <?php if ($adminUnreadCount > 0): ?>
+          <span data-admin-unread-badge class="absolute -right-1 -top-1 inline-flex min-h-5 min-w-5 items-center justify-center rounded-full bg-np-accent px-1 text-[10px] font-bold leading-none text-white"><?= $adminUnreadCount > 99 ? '99+' : $adminUnreadCount ?></span>
+          <?php endif; ?>
+        </a>
+        <?php endif; ?>
         <?php if (!empty($header_phone)): ?>
-        <a href="tel:<?= e($header_phone) ?>" class="flex items-center gap-1.5 text-xs font-mono font-medium text-np-text-muted hover:text-np-accent px-2 py-1.5 rounded transition-colors" aria-label="Téléphone : <?= e($header_phone_display) ?>">
+        <a href="tel:<?= e($header_phone) ?>" class="hidden 2xl:flex items-center gap-1.5 text-xs font-mono font-medium text-np-text-muted hover:text-np-accent px-2 py-1.5 rounded transition-colors whitespace-nowrap" aria-label="Téléphone : <?= e($header_phone_display) ?>">
           <svg class="w-3.5 h-3.5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
           </svg>
@@ -97,18 +125,20 @@ $current_page = $page_key ?? '';
           </svg>
         </button>
 
-        <!-- CTA Devis Button -->
-        <a href="/contact?type=devis" 
-           class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-np-accent hover:bg-np-accent/90 rounded-md transition-all duration-200 shadow-sm hover:shadow hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-np-accent focus-visible:ring-offset-2">
-          <span>Demander un devis</span>
-          <svg class="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-          </svg>
-        </a>
       </div>
       
       <!-- Mobile Controls (< lg) -->
       <div class="flex lg:hidden items-center gap-1.5">
+        <?php if (function_exists('is_admin') && is_admin()): ?>
+        <a href="/admin/messages" class="relative inline-flex h-10 w-10 items-center justify-center rounded-lg border border-np-border/50 text-np-text-muted transition hover:border-np-accent hover:text-np-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-np-accent" aria-label="Messagerie, <?= $adminUnreadCount ?> message<?= $adminUnreadCount === 1 ? '' : 's' ?> non lu<?= $adminUnreadCount === 1 ? '' : 's' ?>" title="Messagerie">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+          </svg>
+          <?php if ($adminUnreadCount > 0): ?>
+          <span data-admin-unread-badge class="absolute -right-1 -top-1 inline-flex min-h-5 min-w-5 items-center justify-center rounded-full bg-np-accent px-1 text-[10px] font-bold leading-none text-white"><?= $adminUnreadCount > 99 ? '99+' : $adminUnreadCount ?></span>
+          <?php endif; ?>
+        </a>
+        <?php endif; ?>
         <!-- Theme toggle mobile -->
         <button type="button" 
                 id="mobile-theme-toggle" 
@@ -264,6 +294,18 @@ $current_page = $page_key ?? '';
 
 </header>
 
+<a href="/contact?type=devis"
+   class="fixed bottom-6 right-6 z-40 hidden lg:inline-flex items-center gap-2 rounded-full border border-white/20 bg-np-primary px-5 py-3 text-sm font-semibold text-white shadow-xl transition hover:-translate-y-0.5 hover:bg-np-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-np-accent focus-visible:ring-offset-2"
+   aria-label="Demander un devis">
+  <svg class="h-4 w-4 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+  </svg>
+  <span>Demander un devis</span>
+  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+  </svg>
+</a>
+
   <!-- Mobile Fullscreen Menu Panel (< lg) -->
   <div id="mobile-menu-panel" 
        class="hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-white dark:bg-[#0A0F16] border-t border-np-border overflow-y-auto px-6 py-6" 
@@ -323,6 +365,20 @@ $current_page = $page_key ?? '';
           <span>Zones d'intervention</span>
         </a>
 
+        <a href="/projet-partenaires" class="flex items-center gap-3 py-3.5 text-base font-grotesk font-semibold text-np-accent border-b border-np-border/60 hover:text-np-accent/80 transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.119-3 2.5S10.343 13 12 13s3 1.119 3 2.5S13.657 18 12 18m0-10V5m0 3v10m0 0v3m8-9a8 8 0 11-16 0 8 8 0 0116 0z"/>
+          </svg>
+          <span>Notre projet — partenaires</span>
+        </a>
+
+        <a href="/abris-metalliques-sur-mesure" class="flex items-center gap-3 py-3.5 text-base font-grotesk font-semibold text-np-text border-b border-np-border/60 hover:text-np-accent transition-colors">
+          <svg class="w-5 h-5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h14V10M9 20v-6h6v6"/>
+          </svg>
+          <span>Abris métalliques sur mesure</span>
+        </a>
+
         <a href="/a-propos" class="flex items-center gap-3 py-3.5 text-base font-grotesk font-semibold text-np-text border-b border-np-border/60 hover:text-np-accent transition-colors">
           <svg class="w-5 h-5 text-np-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -355,6 +411,16 @@ $current_page = $page_key ?? '';
             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
           </svg>
         </a>
+
+        <?php if (function_exists('is_admin') && is_admin()): ?>
+        <a href="/admin/messages" class="flex items-center justify-between gap-3 rounded-lg border border-np-border px-4 py-3 text-sm font-semibold text-np-text transition hover:border-np-accent hover:text-np-accent">
+          <span class="inline-flex items-center gap-2">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            Messagerie
+          </span>
+          <span class="rounded-full bg-np-accent/10 px-2 py-0.5 text-xs font-bold text-np-accent"><?= $adminUnreadCount ?></span>
+        </a>
+        <?php endif; ?>
 
         <!-- Legal Links & Copyright in Mobile Menu -->
         <div class="pt-4 border-t border-np-border/60 flex flex-col gap-2 text-xs text-np-text-muted">

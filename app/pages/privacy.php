@@ -10,7 +10,7 @@ $seo_data = function_exists('seo') ? seo('privacy') : [
 
 include __DIR__ . '/../partials/head.php';
 ?>
-<body class="bg-np-bg text-np-text font-inter antialiased selection:bg-np-accent selection:text-white" <?= function_exists('is_admin') && is_admin() ? 'data-admin="1"' : '' ?> id="top">
+<body class="bg-np-bg text-np-text font-inter antialiased selection:bg-np-accent selection:text-white" <?= function_exists('is_admin') && is_admin() ? 'data-admin="1"' : '' ?> data-page="privacy" id="top">
 
   <!-- Accessibility Skip link -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 bg-np-accent text-white px-5 py-2.5 rounded-md shadow-xl z-50 font-medium">Aller au contenu principal</a>
@@ -22,59 +22,42 @@ include __DIR__ . '/../partials/head.php';
       
       <div class="mb-10 text-center sm:text-left">
         <h1 class="font-grotesk text-3xl sm:text-4xl font-bold text-np-text tracking-tight mb-4" data-edit="seo.privacy.title" data-type="text">
-          <?= e(t('seo.privacy.title')) ?>
+          <?= e(t('seo.privacy.title', 'Politique de confidentialité | NOVA PRESTIGE')) ?>
         </h1>
-        <p class="text-np-text-muted text-sm sm:text-base">
-          Conformité au Règlement Général sur la Protection des Données (RGPD)
+        <p class="text-np-text-muted text-sm sm:text-base" data-edit="privacy.intro" data-type="text">
+          <?= e(t('privacy.intro', 'Conformité au Règlement Général sur la Protection des Données (RGPD)')) ?>
         </p>
       </div>
 
       <div class="prose prose-slate dark:prose-invert max-w-none space-y-8 text-sm sm:text-base leading-relaxed">
         
         <section class="bg-np-surface border border-np-border rounded-xl p-6 sm:p-8">
-          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">1. Collecte et finalité des données</h2>
-          <p>
-            Les informations recueillies via les formulaires de contact et de devis (nom, entreprise, adresse e-mail, téléphone, pays, description de projet) sont enregistrées dans un fichier informatisé par <strong>NOVA PRESTIGE</strong>.
-          </p>
-          <p class="mt-2">
-            Elles sont destinées exclusivement à :
-          </p>
-          <ul class="list-disc pl-5 mt-2 space-y-1">
-            <li>L'étude de faisabilité technique et la préparation de devis.</li>
-            <li>La prise de contact direct avec le porteur de projet ou le responsable d'atelier.</li>
-            <li>Le suivi relationnel de la mission d'ingénierie ou de formation.</li>
-          </ul>
+          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3" data-edit="privacy.section1.title" data-type="text"><?= e(t('privacy.section1.title', '1. Collecte et finalité des données')) ?></h2>
+          <p data-edit="privacy.section1.body" data-type="richtext"><?= t('privacy.section1.body', 'Les informations recueillies via les formulaires de contact et de devis (nom, entreprise, adresse e-mail, téléphone, pays, description de projet) sont enregistrées dans un fichier informatisé par <strong>NOVA PRESTIGE</strong>.') ?></p>
+          <p class="mt-2" data-edit="privacy.section1.lead" data-type="text"><?= e(t('privacy.section1.lead', 'Elles sont destinées exclusivement à :')) ?></p>
+          <div class="mt-2" data-edit="privacy.section1.purposes" data-type="richtext">
+            <ul class="list-disc space-y-1 pl-5"><?= t('privacy.section1.purposes', '<li>L’étude de faisabilité technique et la préparation de devis.</li><li>La prise de contact direct avec le porteur de projet ou le responsable d’atelier.</li><li>Le suivi relationnel de la mission d’ingénierie ou de formation.</li>') ?></ul>
+          </div>
         </section>
 
         <section class="bg-np-surface border border-np-border rounded-xl p-6 sm:p-8">
-          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">2. Durée de conservation</h2>
-          <p>
-            Les données relatives aux demandes de devis et contacts sont conservées pendant une durée maximale de 3 ans à compter du dernier contact émanant du prospect, puis sont définitivement supprimées.
-          </p>
+          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3" data-edit="privacy.section2.title" data-type="text"><?= e(t('privacy.section2.title', '2. Durée de conservation')) ?></h2>
+          <p data-edit="privacy.section2.body" data-type="richtext"><?= t('privacy.section2.body', 'Les données relatives aux demandes de devis et contacts sont conservées pendant une durée maximale de 3 ans à compter du dernier contact émanant du prospect, puis sont définitivement supprimées.') ?></p>
         </section>
 
         <section class="bg-np-surface border border-np-border rounded-xl p-6 sm:p-8">
-          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">3. Destinataires et transfert</h2>
-          <p>
-            Les données envoyées via les formulaires sont utilisées par NOVA PRESTIGE pour traiter votre demande et ne sont ni vendues ni louées. Les outils de mesure d'audience de Google, chargés via Google Tag Manager, restent désactivés tant que vous n'avez pas donné votre accord. Si vous acceptez, des données de navigation et des informations techniques relatives à votre visite peuvent être transmises à Google conformément à sa
-            <a href="https://policies.google.com/privacy?hl=fr" target="_blank" rel="noopener noreferrer" class="text-np-accent underline underline-offset-2">politique de confidentialité</a>
-            et aux paramètres des outils configurés.
-          </p>
+          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3" data-edit="privacy.section3.title" data-type="text"><?= e(t('privacy.section3.title', '3. Destinataires et transfert')) ?></h2>
+          <p data-edit="privacy.section3.body" data-type="richtext"><?= t('privacy.section3.body', 'Les données envoyées via les formulaires sont utilisées par NOVA PRESTIGE pour traiter votre demande et ne sont ni vendues ni louées. Les outils de mesure d’audience de Google, chargés via Google Tag Manager, restent désactivés tant que vous n’avez pas donné votre accord. Si vous acceptez, des données de navigation et des informations techniques relatives à votre visite peuvent être transmises à Google conformément à sa <a href="https://policies.google.com/privacy?hl=fr">politique de confidentialité</a> et aux paramètres des outils configurés.') ?></p>
         </section>
 
         <section class="bg-np-surface border border-np-border rounded-xl p-6 sm:p-8">
-          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">4. Traceurs et choix de consentement</h2>
-          <p>
-            Google Tag Manager et les balises de mesure d'audience associées ne sont chargés qu'après votre accord explicite. Votre choix (acceptation ou refus) est mémorisé dans le stockage local de votre navigateur afin de ne pas vous le redemander à chaque visite. Vous pouvez le modifier à tout moment avec le lien « Préférences cookies » en bas de page.
-          </p>
+          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3" data-edit="privacy.section4.title" data-type="text"><?= e(t('privacy.section4.title', '4. Traceurs et choix de consentement')) ?></h2>
+          <p data-edit="privacy.section4.body" data-type="richtext"><?= t('privacy.section4.body', 'Google Tag Manager et les balises de mesure d’audience associées ne sont chargés qu’après votre accord explicite. Votre choix (acceptation ou refus) est mémorisé dans le stockage local de votre navigateur afin de ne pas vous le redemander à chaque visite. Vous pouvez le modifier à tout moment avec le lien « Préférences cookies » en bas de page.') ?></p>
         </section>
 
         <section class="bg-np-surface border border-np-border rounded-xl p-6 sm:p-8">
-          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3">5. Vos droits d'accès et de rectification</h2>
-          <p>
-            Conformément à la réglementation applicable, vous pouvez exercer votre droit d'accès, de rectification, d'effacement de vos données ou de limitation du traitement en adressant un e-mail à :<br>
-            <a href="mailto:contact@novaprestige.fr" class="text-np-accent hover:underline font-semibold">contact@novaprestige.fr</a>
-          </p>
+          <h2 class="text-lg sm:text-xl font-bold text-np-text font-grotesk mb-3" data-edit="privacy.section5.title" data-type="text"><?= e(t('privacy.section5.title', '5. Vos droits d’accès et de rectification')) ?></h2>
+          <p data-edit="privacy.section5.body" data-type="richtext"><?= t('privacy.section5.body', 'Conformément à la réglementation applicable, vous pouvez exercer votre droit d’accès, de rectification, d’effacement de vos données ou de limitation du traitement en adressant un e-mail à :<br><a href="mailto:contact@novaprestige.fr">contact@novaprestige.fr</a>') ?></p>
         </section>
 
       </div>

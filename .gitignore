@@ -3,5 +3,8 @@
 /node_modules/
 /public/uploads/*
 !/public/uploads/.gitkeep
+/storage/contact-attachments/*
+!/storage/contact-attachments/.gitkeep
+.vscode/
 configurationVPS-1.2.txt
 *.log

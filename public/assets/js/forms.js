@@ -154,7 +154,8 @@ function clearFormErrors(form) {
 
 function showFormErrors(form, errors) {
   Object.entries(errors).forEach(([name, message]) => {
-    const field = form.querySelector(`[name="${name}"]`);
+    const field = form.querySelector(`[name="${name}"]`) ||
+                  form.querySelector(`[name="${name}[]"]`);
     if (field) {
       showFieldError(field, message);
     }

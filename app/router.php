@@ -32,6 +32,8 @@ $phase2Slugs = [
 $routes = [
     'GET' => [
         '/' => __DIR__ . '/pages/home.php',
+        '/projet-partenaires' => __DIR__ . '/pages/projet-partenaires.php',
+        '/abris-metalliques-sur-mesure' => __DIR__ . '/pages/abris-metalliques.php',
         '/bureau-etudes-faisabilite' => __DIR__ . '/pages/service-bureau-etudes.php',
         '/prototypes-developpement-produits' => __DIR__ . '/pages/service-prototypes.php',
         '/facades-metalliques-bardage-calepinage' => __DIR__ . '/pages/service-facades.php',
@@ -43,6 +45,8 @@ $routes = [
         '/contact' => __DIR__ . '/pages/contact.php',
         '/mentions-legales' => __DIR__ . '/pages/legal.php',
         '/politique-confidentialite' => __DIR__ . '/pages/privacy.php',
+        '/admin/messages' => __DIR__ . '/pages/admin-messages.php',
+        '/api/contact-attachment' => __DIR__ . '/api/contact-attachment.php',
         '/sitemap.xml' => __DIR__ . '/pages/sitemap.php',
         '/robots.txt' => __DIR__ . '/pages/robots.php',
     ],
@@ -52,6 +56,7 @@ $routes = [
         '/api/content-save' => __DIR__ . '/api/content-save.php',
         '/api/image-upload' => __DIR__ . '/api/image-upload.php',
         '/api/contact-submit' => __DIR__ . '/api/contact-submit.php',
+        '/api/admin/messages/read' => __DIR__ . '/api/admin-message-read.php',
     ],
 ];
 

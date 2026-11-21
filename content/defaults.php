@@ -1062,4 +1062,382 @@ $CONTENT_DEFAULTS = [
     ],
 ];
 
+$CONTENT_DEFAULTS += [
+    'partenaires.home.tag' => [
+        'page_key' => 'home', 'field_key' => 'partenaires.home.tag', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Un projet industriel à construire ensemble', 'alt' => null,
+    ],
+    'partenaires.home.title' => [
+        'page_key' => 'home', 'field_key' => 'partenaires.home.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Développons une nouvelle activité de fabrication métallique', 'alt' => null,
+    ],
+    'partenaires.home.text' => [
+        'page_key' => 'home', 'field_key' => 'partenaires.home.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Plus de 40 ans d’expérience, un atelier de prototypage en France et une future unité de production en Tunisie : NOVA PRESTIGE recherche des partenaires industriels et financiers.', 'alt' => null,
+    ],
+    'partenaires.home.cta' => [
+        'page_key' => 'home', 'field_key' => 'partenaires.home.cta', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Découvrir le projet et devenir partenaire', 'alt' => null,
+    ],
+    'partenaires.home.image' => [
+        'page_key' => 'home', 'field_key' => 'partenaires.home.image', 'lang' => 'fr', 'type' => 'image',
+        'value' => '/assets/img/service-methodes.webp', 'alt' => 'Atelier industriel et équipements de production',
+    ],
+    'partenaires.hero.eyebrow' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.hero.eyebrow', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Projet industriel · France & Tunisie', 'alt' => null,
+    ],
+    'partenaires.hero.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.hero.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'NOTRE PROJET – OBJECTIFS ET RECHERCHE DE PARTENAIRES', 'alt' => null,
+    ],
+    'partenaires.hero.lead' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.hero.lead', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Construire une nouvelle activité de fabrication métallique, de la conception et du prototype en France à la production en Tunisie. Nous recherchons des partenaires prêts à bâtir ce projet industriel avec NOVA PRESTIGE.', 'alt' => null,
+    ],
+    'partenaires.hero.cta' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.hero.cta', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'DEVENIR PARTENAIRE – ÉTUDIONS ENSEMBLE NOTRE COLLABORATION', 'alt' => null,
+    ],
+    'partenaires.hero.badge1' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.hero.badge1', 'lang' => 'fr', 'type' => 'text',
+        'value' => '40+ ans d’expérience industrielle', 'alt' => null,
+    ],
+    'partenaires.hero.badge2' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.hero.badge2', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Prototypage en France', 'alt' => null,
+    ],
+    'partenaires.hero.badge3' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.hero.badge3', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Production progressive en Tunisie', 'alt' => null,
+    ],
+    'partenaires.hero.image' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.hero.image', 'lang' => 'fr', 'type' => 'image',
+        'value' => '/assets/img/service-prototypes.webp', 'alt' => 'Prototype de pièce métallique en atelier industriel',
+    ],
+    'partenaires.objective.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.objective.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Notre objectif', 'alt' => null,
+    ],
+    'partenaires.objective.lead' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.objective.lead', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Développer une activité spécialisée dans les façades métalliques, le bardage, le pliage industriel et la fabrication de pièces métalliques spécifiques.', 'alt' => null,
+    ],
+    'partenaires.objective.france.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.objective.france.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'En France — concevoir et valider', 'alt' => null,
+    ],
+    'partenaires.objective.france.text' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.objective.france.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Réaliser les études techniques, concevoir et développer les produits, fabriquer les prototypes, conduire les essais et valider les solutions avant leur industrialisation.', 'alt' => null,
+    ],
+    'partenaires.objective.tunisie.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.objective.tunisie.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'En Tunisie — produire progressivement', 'alt' => null,
+    ],
+    'partenaires.objective.tunisie.text' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.objective.tunisie.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Créer progressivement une unité de production pour fabriquer les produits validés en France, d’abord en petites séries, puis selon les besoins du marché.', 'alt' => null,
+    ],
+    'partenaires.search.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Notre recherche de partenaires', 'alt' => null,
+    ],
+    'partenaires.search.lead' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.lead', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Nous recherchons des partenaires industriels, des investisseurs et des entreprises souhaitant participer au développement de ce projet. Plusieurs formes de collaboration sont envisageables :', 'alt' => null,
+    ],
+    'partenaires.search.equipment.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.equipment.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Financement ou acquisition de machines et équipements', 'alt' => null,
+    ],
+    'partenaires.search.equipment.text' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.equipment.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Moyens de production adaptés aux opérations de pliage, poinçonnage et fabrication.', 'alt' => null,
+    ],
+    'partenaires.search.industrial.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.industrial.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Partenariat industriel', 'alt' => null,
+    ],
+    'partenaires.search.industrial.text' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.industrial.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Partage de compétences et mise à disposition de moyens de production.', 'alt' => null,
+    ],
+    'partenaires.search.prototype.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.prototype.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Atelier de prototypage en France', 'alt' => null,
+    ],
+    'partenaires.search.prototype.text' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.prototype.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Participation au développement d’un espace dédié aux essais et à la validation.', 'alt' => null,
+    ],
+    'partenaires.search.tunisia.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.tunisia.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Unité de production en Tunisie', 'alt' => null,
+    ],
+    'partenaires.search.tunisia.text' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.tunisia.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Accompagnement à la création progressive d’un outil de fabrication local.', 'alt' => null,
+    ],
+    'partenaires.search.commercial.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.commercial.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Développement commercial', 'alt' => null,
+    ],
+    'partenaires.search.commercial.text' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.search.commercial.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Partenariats commerciaux et création de nouveaux produits adaptés au marché.', 'alt' => null,
+    ],
+    'partenaires.knowhow.image' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.image', 'lang' => 'fr', 'type' => 'image',
+        'value' => '/assets/img/service-methodes.webp', 'alt' => 'Presse plieuse et équipement de tôlerie industrielle',
+    ],
+    'partenaires.knowhow.experience' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.experience', 'lang' => 'fr', 'type' => 'text',
+        'value' => '40+ ans', 'alt' => null,
+    ],
+    'partenaires.knowhow.caption' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.caption', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'd’expérience dans la construction métallique', 'alt' => null,
+    ],
+    'partenaires.knowhow.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Notre savoir-faire', 'alt' => null,
+    ],
+    'partenaires.knowhow.lead' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.lead', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Le projet s’appuie sur plus de 40 ans d’expérience dans l’industrie de la construction métallique, acquise chez ArcelorMittal Construction France.', 'alt' => null,
+    ],
+    'partenaires.knowhow.item1' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.item1', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Pliage et mise au point de pièces', 'alt' => null,
+    ],
+    'partenaires.knowhow.item2' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.item2', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Poinçonnage et déroulage', 'alt' => null,
+    ],
+    'partenaires.knowhow.item3' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.item3', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Soudure et assemblage', 'alt' => null,
+    ],
+    'partenaires.knowhow.item4' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.item4', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Méthodes et organisation industrielles', 'alt' => null,
+    ],
+    'partenaires.knowhow.item5' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.item5', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Développement de produits', 'alt' => null,
+    ],
+    'partenaires.knowhow.item6' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.knowhow.item6', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Industrialisation et transfert en production', 'alt' => null,
+    ],
+    'partenaires.benefits.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.benefits.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Pourquoi devenir partenaire ?', 'alt' => null,
+    ],
+    'partenaires.benefits.item1' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.benefits.item1', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Participer au lancement d’un projet industriel évolutif.', 'alt' => null,
+    ],
+    'partenaires.benefits.item2' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.benefits.item2', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Bénéficier d’une expertise technique de plus de 40 ans.', 'alt' => null,
+    ],
+    'partenaires.benefits.item3' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.benefits.item3', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Développer de nouveaux produits et de nouvelles opportunités commerciales.', 'alt' => null,
+    ],
+    'partenaires.benefits.item4' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.benefits.item4', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Associer développement en France et production en Tunisie.', 'alt' => null,
+    ],
+    'partenaires.benefits.item5' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.benefits.item5', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Construire une collaboration industrielle avec des perspectives à long terme.', 'alt' => null,
+    ],
+    'partenaires.contact.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Étudions ensemble notre collaboration', 'alt' => null,
+    ],
+    'partenaires.contact.lead' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.lead', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Vous souhaitez investir, mettre à disposition des équipements ou contribuer au développement industriel et commercial du projet ? Présentez-nous votre entreprise et votre proposition.', 'alt' => null,
+    ],
+    'partenaires.contact.promise.title' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.promise.title', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Chaque proposition sera étudiée avec attention.', 'alt' => null,
+    ],
+    'partenaires.contact.promise.text' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.promise.text', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Les informations transmises sont utilisées uniquement pour examiner votre proposition et vous recontacter.', 'alt' => null,
+    ],
+    'partenaires.contact.label.company' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.label.company', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Nom de l’entreprise', 'alt' => null,
+    ],
+    'partenaires.contact.label.sector' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.label.sector', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Secteur d’activité', 'alt' => null,
+    ],
+    'partenaires.contact.label.name' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.label.name', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Nom du contact', 'alt' => null,
+    ],
+    'partenaires.contact.label.email' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.label.email', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Adresse e-mail professionnelle', 'alt' => null,
+    ],
+    'partenaires.contact.label.phone' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.label.phone', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Téléphone (facultatif)', 'alt' => null,
+    ],
+    'partenaires.contact.label.type' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.label.type', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Type de partenariat envisagé', 'alt' => null,
+    ],
+    'partenaires.contact.label.message' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.label.message', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Votre proposition et vos moyens', 'alt' => null,
+    ],
+    'partenaires.contact.message.note' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.message.note', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'Décrivez votre proposition en au moins 20 caractères.', 'alt' => null,
+    ],
+    'partenaires.contact.consent' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.consent', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'J’accepte que NOVA PRESTIGE utilise ces informations uniquement pour étudier ma proposition et me recontacter.', 'alt' => null,
+    ],
+    'partenaires.contact.button' => [
+        'page_key' => 'projet-partenaires', 'field_key' => 'partenaires.contact.button', 'lang' => 'fr', 'type' => 'text',
+        'value' => 'DEVENIR PARTENAIRE – ÉTUDIONS ENSEMBLE NOTRE COLLABORATION', 'alt' => null,
+    ],
+];
+
+$abrisContent = [
+    'abris.home.tag' => 'Pour les particuliers',
+    'abris.home.title' => 'Un abri métallique pensé pour votre projet',
+    'abris.home.text' => 'Studios de jardin, abris, ateliers et locaux techniques sur mesure : découvrez nos modèles et demandez une étude personnalisée.',
+    'abris.home.cta' => 'Découvrir les abris sur mesure',
+    'abris.hero.eyebrow' => 'Une offre dédiée aux particuliers',
+    'abris.hero.title' => 'ABRIS ET CONSTRUCTIONS MÉTALLIQUES SUR MESURE',
+    'abris.hero.lead' => 'Votre projet, vos dimensions, vos finitions. NOVA PRESTIGE vous accompagne de la conception à la réalisation de votre abri métallique sur mesure.',
+    'abris.hero.study_cta' => 'Demander une étude',
+    'abris.hero.quote_cta' => 'Demander un devis',
+    'abris.hero.disclaimer' => 'Les images présentées illustrent des modèles et possibilités de conception ; elles ne constituent pas des réalisations déjà effectuées par NOVA PRESTIGE.',
+    'abris.offer.title' => 'Un projet unique, plusieurs possibilités',
+    'abris.offer.intro' => 'Du simple espace de rangement au studio de jardin, chaque configuration est étudiée selon votre besoin, votre terrain et votre budget.',
+    'abris.offer.garden' => 'Abris de jardin métalliques',
+    'abris.offer.insulated' => 'Abris isolés ou non isolés',
+    'abris.offer.workshop' => 'Ateliers et locaux de rangement',
+    'abris.offer.pool' => 'Locaux techniques pour piscine',
+    'abris.offer.office' => 'Bureaux et studios de jardin',
+    'abris.offer.cladding' => 'Habillages et finitions en acier laqué et aluminium',
+    'abris.offer.custom' => 'Constructions entièrement personnalisées',
+    'abris.presentation.title' => 'Votre projet, vos dimensions, vos finitions.',
+    'abris.presentation.text1' => 'NOVA PRESTIGE vous accompagne de la conception à la réalisation de votre abri métallique sur mesure.',
+    'abris.presentation.text2' => 'Nous étudions votre besoin, réalisons les plans, vous conseillons sur les matériaux et les finitions, puis coordonnons les différentes étapes de fabrication et de réalisation avec nos partenaires spécialisés.',
+    'abris.presentation.text3' => 'Notre objectif : proposer une solution personnalisée, adaptée à votre terrain, à vos besoins et à votre budget.',
+    'abris.presentation.text4' => 'Avec plus de 40 ans d’expérience dans la métallurgie, le pliage et les façades métalliques, nous mettons notre savoir-faire technique au service de vos projets.',
+    'abris.presentation.image_caption' => 'Illustration d’un modèle possible — conception personnalisable',
+    'abris.gallery.title' => 'Des modèles pour imaginer le vôtre',
+    'abris.gallery.intro' => 'Découvrez différentes formes, finitions et aménagements. Les dimensions, ouvertures, isolations et habillages peuvent être étudiés selon votre projet.',
+    'abris.gallery.caption1' => 'Studio de jardin anthracite avec finition aspect bois et grandes ouvertures vitrées.',
+    'abris.gallery.caption2' => 'Abri métallique anthracite avec habillage aspect bois et ouverture vitrée.',
+    'abris.gallery.caption3' => 'Abri de rangement métallique avec doubles portes et aménagement intérieur.',
+    'abris.gallery.caption4' => 'Local technique métallique clair avec porte et grandes ouvertures.',
+    'abris.gallery.caption5' => 'Studio de jardin contemporain anthracite avec façade vitrée et finition décorative.',
+    'abris.gallery.caption6' => 'Intérieur de construction métallique isolée, éclairée et prête à aménager.',
+    'abris.gallery.caption7' => 'Atelier métallique avec doubles portes et espace de rangement.',
+    'abris.gallery.caption8' => 'Abri métallique avec bardage décoratif aspect bois et structure anthracite.',
+    'abris.gallery.disclaimer' => 'Photos présentées à titre d’illustration de modèles possibles. Elles ne représentent pas des réalisations de NOVA PRESTIGE. Chaque projet est étudié et défini sur mesure.',
+    'abris.steps.title' => 'Un accompagnement à chaque étape',
+    'abris.steps.intro' => 'Nous clarifions votre besoin, préparons les choix techniques et coordonnons le projet avec des partenaires spécialisés.',
+    'abris.steps.item1' => 'Étude du besoin et de l’usage souhaité.',
+    'abris.steps.item2' => 'Dimensions et contraintes du terrain.',
+    'abris.steps.item3' => 'Conception des plans et préparation technique.',
+    'abris.steps.item4' => 'Choix des matériaux, de l’isolation et des finitions.',
+    'abris.steps.item5' => 'Coordination de la fabrication avec des partenaires spécialisés.',
+    'abris.steps.item6' => 'Suivi du projet jusqu’à sa réalisation.',
+    'abris.coverage.title' => 'Des projets étudiés partout en France',
+    'abris.coverage.text' => 'NOVA PRESTIGE étudie les demandes dans toute la France, avec une priorité pour la Nouvelle-Aquitaine et les régions limitrophes.',
+    'abris.coverage.exclusions_title' => 'À prévoir dans votre projet',
+    'abris.coverage.exclusions_text' => 'Les prestations de plomberie, d’électricité et les raccordements aux réseaux ne sont pas compris.',
+    'abris.contact.title' => 'Étude ou devis : à vous de choisir',
+    'abris.contact.intro' => 'Vous avez une première idée ou déjà des plans et des dimensions précises ? Choisissez le formulaire adapté et joignez vos documents.',
+    'abris.contact.study_button' => 'Demander une étude',
+    'abris.contact.quote_button' => 'Demander un devis',
+    'abris.contact.call_button' => 'Appeler NOVA PRESTIGE',
+    'abris.contact.email_button' => 'Envoyer un e-mail',
+    'abris.study.title' => 'DEMANDER UNE ÉTUDE',
+    'abris.study.intro' => 'NOVA PRESTIGE — Votre projet sur mesure. Présentez-nous votre idée d’abri, d’atelier ou de studio de jardin ; nous étudierons votre demande et vous accompagnerons dans sa conception.',
+    'abris.study.label.name' => 'Nom et prénom',
+    'abris.study.label.phone' => 'Téléphone',
+    'abris.study.label.email' => 'Adresse e-mail',
+    'abris.study.label.city' => 'Ville du projet',
+    'abris.study.label.type' => 'Type d’abri souhaité',
+    'abris.study.label.dimensions' => 'Dimensions approximatives',
+    'abris.study.label.insulation' => 'Isolation souhaitée',
+    'abris.study.label.budget' => 'Budget envisagé (facultatif)',
+    'abris.study.label.deadline' => 'Délai souhaité',
+    'abris.study.label.materials' => 'Matériaux et finitions souhaités',
+    'abris.study.label.message' => 'Parlez-nous de votre projet',
+    'abris.study.label.attachments' => 'Photos du terrain ou croquis (facultatif)',
+    'abris.study.consent' => 'J’accepte que NOVA PRESTIGE utilise ces informations uniquement pour étudier mon projet et me recontacter.',
+    'abris.study.submit' => 'ENVOYER MA DEMANDE D’ÉTUDE',
+    'abris.quote.title' => 'DEMANDER UN DEVIS',
+    'abris.quote.intro' => 'NOVA PRESTIGE — Étude de votre projet. Votre projet est déjà défini ? Transmettez-nous les informations nécessaires pour préparer une proposition adaptée.',
+    'abris.quote.label.name' => 'Nom et prénom',
+    'abris.quote.label.phone' => 'Téléphone',
+    'abris.quote.label.email' => 'Adresse e-mail',
+    'abris.quote.label.city' => 'Ville du chantier',
+    'abris.quote.label.address' => 'Adresse du chantier',
+    'abris.quote.label.type' => 'Type de construction',
+    'abris.quote.label.dimensions' => 'Dimensions précises',
+    'abris.quote.label.insulation' => 'Isolation souhaitée',
+    'abris.quote.label.materials' => 'Matériaux et finitions',
+    'abris.quote.label.message' => 'Description du projet',
+    'abris.quote.label.additional' => 'Informations complémentaires (facultatif)',
+    'abris.quote.label.attachments' => 'Plans, croquis et photos (facultatif)',
+    'abris.quote.consent' => 'J’accepte que NOVA PRESTIGE utilise ces informations uniquement pour étudier ma demande de devis et me recontacter.',
+    'abris.quote.submit' => 'ENVOYER MA DEMANDE DE DEVIS',
+    'abris.study.upload.note' => 'Jusqu’à 4 fichiers JPG, PNG, WebP ou PDF, 2 Mo maximum par fichier.',
+    'abris.quote.upload.note' => 'Jusqu’à 4 fichiers JPG, PNG, WebP ou PDF, 2 Mo maximum par fichier.',
+    'abris.terms' => 'Les projets sont définis sur mesure après étude. Les prestations de plomberie, d’électricité et les raccordements aux réseaux ne sont pas compris.',
+];
+
+foreach ($abrisContent as $key => $value) {
+    $CONTENT_DEFAULTS[$key] = [
+        'page_key' => str_starts_with($key, 'abris.home.') ? 'home' : 'abris-metalliques-sur-mesure',
+        'field_key' => $key,
+        'lang' => 'fr',
+        'type' => 'text',
+        'value' => $value,
+        'alt' => null,
+    ];
+}
+
+$abrisImages = [
+    'abris.hero.image' => ['/assets/img/abri5.jpeg', 'Illustration d’un studio de jardin métallique anthracite avec finition aspect bois et grandes baies vitrées'],
+    'abris.presentation.image' => ['/assets/img/abri5.jpeg', 'Illustration de studio de jardin métallique sur mesure'],
+    'abris.gallery.image1' => ['/assets/img/abri5.jpeg', 'Studio de jardin anthracite avec finition aspect bois et grandes ouvertures vitrées.'],
+    'abris.gallery.image2' => ['/assets/img/abri1.jpeg', 'Abri métallique anthracite avec habillage aspect bois et ouverture vitrée.'],
+    'abris.gallery.image3' => ['/assets/img/abri2.jpeg', 'Abri de rangement métallique avec doubles portes et aménagement intérieur.'],
+    'abris.gallery.image4' => ['/assets/img/abri3.jpeg', 'Local technique métallique clair avec porte et grandes ouvertures.'],
+    'abris.gallery.image5' => ['/assets/img/abri4.jpeg', 'Studio de jardin contemporain anthracite avec façade vitrée et finition décorative.'],
+    'abris.gallery.image6' => ['/assets/img/abri6.webp', 'Intérieur de construction métallique isolée, éclairée et prête à aménager.'],
+    'abris.gallery.image7' => ['/assets/img/abri7.webp', 'Atelier métallique avec doubles portes et espace de rangement.'],
+    'abris.gallery.image8' => ['/assets/img/abri8.webp', 'Abri métallique avec bardage décoratif aspect bois et structure anthracite.'],
+];
+
+foreach ($abrisImages as $key => [$image, $alt]) {
+    $CONTENT_DEFAULTS[$key] = [
+        'page_key' => 'abris-metalliques-sur-mesure',
+        'field_key' => $key,
+        'lang' => 'fr',
+        'type' => 'image',
+        'value' => $image,
+        'alt' => $alt,
+    ];
+}
+
 return $CONTENT_DEFAULTS;

@@ -152,6 +152,20 @@ include __DIR__ . '/../partials/head.php';
       </a>
     </section>
 
+    <section class="border-b border-np-border bg-np-surface py-10 sm:py-12" aria-labelledby="abris-feature-heading">
+      <div class="container mx-auto flex flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <div class="max-w-3xl">
+          <p class="mb-2 font-mono text-xs font-semibold uppercase tracking-widest text-np-accent" data-edit="abris.home.tag" data-type="text"><?= e(t('abris.home.tag', 'Pour les particuliers')) ?></p>
+          <h2 id="abris-feature-heading" class="mb-2 font-grotesk text-2xl font-bold" data-edit="abris.home.title" data-type="text"><?= e(t('abris.home.title', 'Un abri métallique pensé pour votre projet')) ?></h2>
+          <p class="text-sm leading-relaxed text-np-text-muted sm:text-base" data-edit="abris.home.text" data-type="text"><?= e(t('abris.home.text', 'Studios de jardin, abris, ateliers et locaux techniques sur mesure : découvrez nos modèles et demandez une étude personnalisée.')) ?></p>
+        </div>
+        <a href="/abris-metalliques-sur-mesure" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-np-accent px-6 py-3.5 text-sm font-semibold text-np-accent transition hover:bg-np-accent hover:text-white">
+          <span data-edit="abris.home.cta" data-type="text"><?= e(t('abris.home.cta', 'Découvrir les abris sur mesure')) ?></span>
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </section>
+
     <!-- ========================================== -->
     <!-- SECTION 2: STATS                           -->
     <!-- ========================================== -->
@@ -225,6 +239,38 @@ include __DIR__ . '/../partials/head.php';
         <?php endfor; ?>
       </div>
     </div>
+
+    <!-- PARTNERSHIP PROJECT FEATURE -->
+    <section class="relative overflow-hidden border-y border-np-border bg-np-primary text-white" aria-labelledby="partnership-feature-heading">
+      <div class="absolute inset-0 opacity-20">
+        <img src="<?= e(img('partenaires.home.image', '/assets/img/service-methodes.webp', 'Atelier industriel et équipements de production')['src']) ?>"
+             alt=""
+             class="h-full w-full object-cover"
+             loading="lazy"
+             data-edit="partenaires.home.image"
+             data-type="image">
+      </div>
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-np-primary via-np-primary/95 to-np-primary/60"></div>
+      <div class="container relative mx-auto grid gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-center lg:px-8 lg:py-16">
+        <div class="max-w-3xl">
+          <p class="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-np-accent" data-edit="partenaires.home.tag" data-type="text">
+            <?= e(t('partenaires.home.tag', 'Un projet industriel à construire ensemble')) ?>
+          </p>
+          <h2 id="partnership-feature-heading" class="mb-4 font-grotesk text-2xl font-bold leading-tight sm:text-3xl" data-edit="partenaires.home.title" data-type="text">
+            <?= e(t('partenaires.home.title', 'Développons une nouvelle activité de fabrication métallique')) ?>
+          </h2>
+          <p class="max-w-2xl text-sm leading-relaxed text-blue-100 sm:text-base" data-edit="partenaires.home.text" data-type="text">
+            <?= e(t('partenaires.home.text', 'Plus de 40 ans d’expérience, un atelier de prototypage en France et une future unité de production en Tunisie : NOVA PRESTIGE recherche des partenaires industriels et financiers.')) ?>
+          </p>
+        </div>
+        <a href="/projet-partenaires" class="inline-flex items-center justify-center gap-2 rounded-lg bg-np-accent px-6 py-4 text-center text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-np-accent/90">
+          <span data-edit="partenaires.home.cta" data-type="text"><?= e(t('partenaires.home.cta', 'Découvrir le projet et devenir partenaire')) ?></span>
+          <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </a>
+      </div>
+    </section>
 
     <!-- ========================================== -->
     <!-- SECTION 3: EXPERTISES (6 Cards)            -->
