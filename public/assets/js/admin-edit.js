@@ -75,7 +75,7 @@ function injectAdminBar() {
     } catch (e) {
       console.warn('Logout request failed:', e);
     }
-    window.location.reload();
+    window.location.assign('/');
   });
 
   document.getElementById('admin-seo-btn')?.addEventListener('click', openSeoModal);

@@ -2,9 +2,8 @@
 declare(strict_types=1);
 
 if (!function_exists('is_admin') || !is_admin()) {
-    http_response_code(403);
     header('X-Robots-Tag: noindex, nofollow');
-    echo 'Accès réservé à l’administration.';
+    header('Location: /', true, 302);
     exit;
 }
 
@@ -38,7 +37,7 @@ if (!$pdo instanceof PDO) {
 
         $stmt = $pdo->prepare(
             "SELECT requests.id, requests.name, requests.company, requests.email, requests.phone,
-                    requests.country, requests.service, requests.message, requests.request_type,
+                    requests.country, requests.service, requests.mode, requests.message, requests.request_type,
                     requests.created_at, read_state.read_at
              FROM contact_requests requests
              LEFT JOIN contact_request_reads read_state ON read_state.contact_request_id = requests.id
@@ -64,6 +63,21 @@ $requestLabels = [
     'partenariat' => 'Formulaire partenariat',
     'abri_etude' => 'Formulaire abris — demande d’étude',
     'abri_devis' => 'Formulaire abris — demande de devis',
+];
+$detailLabels = [
+    'Secteur d’activité',
+    'Ville du projet',
+    'Type de construction',
+    'Dimensions',
+    'Isolation',
+    'Surface approximative',
+    'Matériaux et finitions',
+    'Type de toiture',
+    'Couleur ou finition souhaitée',
+    'Budget envisagé',
+    'Délai souhaité',
+    'Adresse du chantier',
+    'Informations complémentaires',
 ];
 
 include __DIR__ . '/../partials/head.php';
@@ -99,6 +113,77 @@ include __DIR__ . '/../partials/head.php';
           $isRead = $message['read_at'] !== null;
           $messageId = (int)$message['id'];
           $createdAt = strtotime((string)$message['created_at']);
+          $requestDetails = [];
+          $attachments = [];
+          $descriptionLines = [];
+          $descriptionStarted = false;
+          $lastDetailLabel = null;
+          $storedMessage = (string)$message['message'];
+          $hasDescriptionMarker = preg_match('/^Description du besoin :$/m', $storedMessage) === 1;
+          foreach (explode("\n", $storedMessage) as $messageLine) {
+              if (trim($messageLine) === 'Description du besoin :') {
+                  $descriptionStarted = true;
+                  continue;
+              }
+              if ($descriptionStarted) {
+                  $descriptionLines[] = $messageLine;
+                  continue;
+              }
+
+              if (preg_match('~^Pièce jointe : (.+?) — (https?://\S+)$~u', $messageLine, $attachmentMatch)) {
+                  $attachmentUrl = $attachmentMatch[2];
+                  $attachmentPath = parse_url($attachmentUrl, PHP_URL_PATH);
+                  $expectedAttachmentPath = parse_url(url('/api/contact-attachment'), PHP_URL_PATH);
+                  $attachmentQuery = [];
+                  parse_str((string)parse_url($attachmentUrl, PHP_URL_QUERY), $attachmentQuery);
+                  $storedFile = (string)($attachmentQuery['file'] ?? '');
+                  if (
+                      $attachmentPath === $expectedAttachmentPath
+                      && preg_match('/^\d{8}_[a-f0-9]{48}\.(jpg|png|webp|pdf)$/', $storedFile)
+                  ) {
+                      $originalName = (string)($attachmentQuery['name'] ?? $attachmentMatch[1]);
+                      $attachments[] = [
+                          'name' => $originalName,
+                          'url' => url('/api/contact-attachment')
+                              . '?file=' . rawurlencode($storedFile)
+                              . '&name=' . rawurlencode($originalName),
+                      ];
+                  }
+                  continue;
+              }
+
+              $matchedDetail = false;
+              foreach ($detailLabels as $detailLabel) {
+                  $prefix = $detailLabel . ': ';
+                  if (str_starts_with($messageLine, $prefix)) {
+                      $requestDetails[$detailLabel] = substr($messageLine, strlen($prefix));
+                      $lastDetailLabel = $detailLabel;
+                      $matchedDetail = true;
+                      break;
+                  }
+              }
+              if (!$matchedDetail) {
+                  if ($hasDescriptionMarker && $lastDetailLabel !== null) {
+                      $requestDetails[$lastDetailLabel] .= "\n" . $messageLine;
+                  } else {
+                      $descriptionStarted = true;
+                      $descriptionLines[] = $messageLine;
+                  }
+              }
+          }
+
+          if (!empty($message['country'])) {
+              $requestDetails['Pays'] = (string)$message['country'];
+          }
+          if (!empty($message['service'])) {
+              $requestDetails['Domaine d’intervention'] = (string)$message['service'];
+          }
+          if (!empty($message['mode'])) {
+              $requestDetails['Modalité souhaitée'] = (string)$message['mode'];
+          }
+          $description = $hasDescriptionMarker
+              ? trim(implode("\n", $descriptionLines))
+              : trim($storedMessage);
           ?>
           <article id="message-<?= $messageId ?>" data-message-id="<?= $messageId ?>" data-read="<?= $isRead ? '1' : '0' ?>" class="rounded-2xl border <?= $isRead ? 'border-np-border bg-np-surface' : 'border-np-accent/50 bg-np-surface shadow-md shadow-np-accent/5' ?> p-5 sm:p-6">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -124,12 +209,30 @@ include __DIR__ . '/../partials/head.php';
               <?php endif; ?>
             </div>
             <details class="mt-5 border-t border-np-border pt-4">
-              <summary class="cursor-pointer text-sm font-semibold text-np-primary hover:text-np-accent dark:text-np-primary">Lire le message</summary>
+              <summary class="cursor-pointer text-sm font-semibold text-np-primary hover:text-np-accent dark:text-np-primary">Voir tous les détails</summary>
               <div class="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-                <?php if (!empty($message['country'])): ?><p><strong>Pays :</strong> <?= e((string)$message['country']) ?></p><?php endif; ?>
-                <?php if (!empty($message['service'])): ?><p><strong>Domaine :</strong> <?= e((string)$message['service']) ?></p><?php endif; ?>
+                <?php foreach ($requestDetails as $detailLabel => $detailValue): ?>
+                  <?php if ($detailValue !== ''): ?>
+                    <p class="break-words"><strong><?= e($detailLabel) ?> :</strong> <?= nl2br(e($detailValue)) ?></p>
+                  <?php endif; ?>
+                <?php endforeach; ?>
               </div>
-              <pre class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-np-bg p-4 font-inter text-sm leading-relaxed text-np-text"><?= e((string)$message['message']) ?></pre>
+              <?php if ($attachments !== []): ?>
+                <div class="mt-4 rounded-xl border border-np-border bg-np-bg p-4">
+                  <h3 class="text-sm font-semibold">Pièces jointes (<?= count($attachments) ?>)</h3>
+                  <ul class="mt-2 space-y-2 text-sm">
+                    <?php foreach ($attachments as $attachment): ?>
+                      <li><a class="break-all text-np-accent underline hover:no-underline" href="<?= e($attachment['url']) ?>"><?= e($attachment['name']) ?></a></li>
+                    <?php endforeach; ?>
+                  </ul>
+                </div>
+              <?php endif; ?>
+              <?php if ($description !== ''): ?>
+                <div class="mt-4">
+                  <h3 class="mb-2 text-sm font-semibold"><?= $hasDescriptionMarker ? 'Description du besoin' : 'Message reçu' ?></h3>
+                  <pre class="whitespace-pre-wrap break-words rounded-xl bg-np-bg p-4 font-inter text-sm leading-relaxed text-np-text"><?= e($description) ?></pre>
+                </div>
+              <?php endif; ?>
             </details>
           </article>
         <?php endforeach; ?>

@@ -171,7 +171,7 @@ function showLoginModal() {
       const data = await res.json().catch(() => ({}));
       
       if (res.ok && data.success) {
-        window.location.reload();
+        window.location.assign('/');
       } else {
         errorEl.textContent = data.error || 'Identifiants invalides';
         errorEl.classList.remove('hidden');

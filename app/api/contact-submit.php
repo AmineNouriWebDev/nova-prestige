@@ -405,6 +405,7 @@ if ($isShelterRequest) {
         $messageDetails[] = "Informations complémentaires : {$additionalInfo}";
     }
 }
+$messageDetails[] = 'Description du besoin :';
 $messageDetails[] = $message;
 
 $attachmentDirectory = dirname(__DIR__, 2) . '/storage/contact-attachments';
@@ -413,16 +414,6 @@ if ($uploadedFiles !== []) {
     if (!is_dir($attachmentDirectory) && !mkdir($attachmentDirectory, 0700, true) && !is_dir($attachmentDirectory)) {
         error_log('Failed to create private contact attachment directory.');
         json_response(['error' => 'Une erreur technique empêche le traitement des pièces jointes.'], 500);
-    }
-    foreach (glob($attachmentDirectory . '/*') ?: [] as $existingFile) {
-        $existingName = basename($existingFile);
-        if (!is_file($existingFile) || !preg_match('/^(\d{8})_[a-f0-9]{48}\.(jpg|png|webp|pdf)$/', $existingName, $existingMatches)) {
-            continue;
-        }
-        $existingDate = DateTimeImmutable::createFromFormat('!Ymd', $existingMatches[1]);
-        if ($existingDate && $existingDate < new DateTimeImmutable('today -7 days')) {
-            unlink($existingFile);
-        }
     }
     foreach ($uploadedFiles as $uploadedFile) {
         $storedName = date('Ymd') . '_' . bin2hex(random_bytes(24)) . '.' . $uploadedFile['extension'];

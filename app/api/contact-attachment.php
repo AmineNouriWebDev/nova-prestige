@@ -15,13 +15,6 @@ if (!preg_match('/^(\d{8})_[a-f0-9]{48}\.(jpg|png|webp|pdf)$/', $storedName, $ma
     exit;
 }
 
-$fileDate = DateTimeImmutable::createFromFormat('!Ymd', $matches[1]);
-$oldestAllowedDate = new DateTimeImmutable('today -7 days');
-if (!$fileDate || $fileDate > new DateTimeImmutable('today') || $fileDate < $oldestAllowedDate) {
-    http_response_code(404);
-    exit;
-}
-
 $filePath = dirname(__DIR__, 2) . '/storage/contact-attachments/' . $storedName;
 if (!is_file($filePath) || !is_readable($filePath)) {
     http_response_code(404);
